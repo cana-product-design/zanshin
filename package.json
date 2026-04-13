@@ -1,0 +1,50 @@
+{
+  "name": "@zanshin/ui",
+  "version": "1.0.0",
+  "description": "A Japanese-inspired React design system with APCA-validated accessibility",
+  "type": "module",
+  "license": "MIT",
+  "author": "Zanshin Design System",
+  "keywords": [
+    "react",
+    "design-system",
+    "japanese",
+    "accessibility",
+    "apca",
+    "typescript"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "build:storybook": "storybook build -o storybook-static",
+    "test:apca": "vitest run src/apca.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-docs": "^8.6.12",
+    "@storybook/addon-essentials": "^8.6.12",
+    "@storybook/addon-interactions": "^8.6.12",
+    "@storybook/react": "^8.6.12",
+    "@storybook/react-vite": "^8.6.12",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "storybook": "^8.6.12",
+    "typescript": "^5.5.0",
+    "vite": "^5.4.0",
+    "vitest": "^2.1.0"
+  }
+}

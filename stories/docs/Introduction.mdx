@@ -1,0 +1,66 @@
+{/* Introduction.mdx */}
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Docs/Introduction" />
+
+# 残心 Zanshin Design System
+
+**A Japanese-inspired React design system with APCA-validated accessibility**
+
+---
+
+## Philosophy
+
+Three principles govern every design decision in Zanshin.
+
+### Wabi-sabi (侘び寂び)
+Beauty in imperfection and transience. Surfaces carry subtle texture rather than sterile flatness. Whitespace is intentional silence — not emptiness, but charged potential. Nothing is over-polished; honest materials show through. The warm shironeri background and kinari borders are not pure white or stark gray, but shades that acknowledge the organic nature of craft.
+
+### Zanshin (残心)
+Lingering awareness after action. Every interaction leaves a trace: transitions don't snap, focus states breathe, hover states suggest presence before commitment. The name of this system is this principle. When a button is pressed, it remembers — `translateY(1px)` and a receding shadow signal the full arc of the action. The underline on a nav link expands with a long ease, then stays. This is zanshin.
+
+### Sumi-e (墨絵)
+Ink-wash economy. A single brushstroke defines form. The UI uses minimum elements with maximum intention. No decoration that doesn't encode meaning. The Divider component is literally a brushstroke — a gradient that fades to nothing at both ends, like ink absorbed into washi paper. Corner radii never exceed 8px. Every shadow uses only deep-indigo or grayscale tones.
+
+---
+
+## Two Palettes, One System
+
+Zanshin provides two named color modes, switchable at runtime via the toolbar above:
+
+| Palette | Character | Accent | Context |
+|---|---|---|---|
+| **Kintsugi** (金継ぎ) | Warm, contemplative | Gold `#C9A84C` | Portfolio, editorial, personal |
+| **Aizome** (藍染) | Disciplined, focused | Indigo `#2B5BA8` | Product UI, dashboards, documentation |
+
+Both palettes share a common foundation: shironeri surfaces, kinari borders, sumi text. The accent layer switches; everything else stays constant.
+
+---
+
+## Quick Start
+
+```tsx
+import { ZanshinProvider, Button, Card } from '@zanshin/ui';
+
+function App() {
+  return (
+    <ZanshinProvider defaultPalette="aizome">
+      <Card title="Zanshin">
+        <Button variant="primary">Take action</Button>
+      </Card>
+    </ZanshinProvider>
+  );
+}
+```
+
+---
+
+## Explore
+
+Use the **Palette** and **Theme** toolbar items to preview every component in all four states:
+- Kintsugi light
+- Kintsugi dark
+- Aizome light
+- Aizome dark
+
+Navigate to any component in the sidebar to see its Playground story with live controls, and variant stories showing all states side-by-side.

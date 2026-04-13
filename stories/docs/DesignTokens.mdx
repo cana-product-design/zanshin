@@ -1,0 +1,119 @@
+{/* DesignTokens.mdx */}
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Docs/Design Tokens" />
+
+# Design Tokens
+
+All Zanshin components use CSS custom properties exclusively. No hardcoded hex values appear in component code.
+
+---
+
+## Color Palette
+
+### Foundation — Both Modes
+
+These tokens are identical across all palette modes.
+
+| Token | Value | Name | Description |
+|---|---|---|---|
+| `--color-shironeri` | `#F5F4EF` | 白練 Raw silk | Primary light background |
+| `--color-fiber` | `#DDD9CE` | Natural fiber | Card surfaces (kintsugi) |
+| `--color-kinari` | `#D9D5C7` | 生成り Unbleached | Borders, dividers |
+| `--color-sumi` | `#1C1C1E` | 墨 Ink black | Primary text |
+| `--color-hai` | `#6B7280` | 灰 Ash gray | Secondary text |
+
+### Semantic Colors
+
+| Token | Value | Usage |
+|---|---|---|
+| `--color-success` | `#2D6A4F` | Bamboo green — growth, resilience |
+| `--color-warning` | `#B45309` | Lacquer amber — caution, craft |
+| `--color-error` | `#9B1C1C` | Iron oxide red — urgency |
+| `--color-info` | `#2563EB` | Clear sky blue |
+
+### Kintsugi Palette
+
+| Token | Value | Usage |
+|---|---|---|
+| `--accent-primary` | `#C9A84C` | Kintsugi gold — CTAs, links |
+| `--accent-hover` | `#A8863B` | Deepened amber — hover states |
+| `--surface-base` | `#F5F4EF` | Shironeri — page background |
+| `--surface-raised` | `#DDD9CE` | Natural fiber — cards |
+
+### Aizome Light Palette
+
+| Token | Value | Usage |
+|---|---|---|
+| `--accent-primary` | `#2B5BA8` | Aiiro — CTAs, links (Lc +77) |
+| `--accent-hover` | `#1A2744` | Nōkon — hover states |
+| `--surface-base` | `#F5F4EF` | Shironeri |
+| `--surface-raised` | `#EAE8E0` | Washi — cards |
+
+### Aizome Dark Palette (Kachiiro Ground)
+
+| Token | Value | Usage |
+|---|---|---|
+| `--accent-primary` | `#4DB3CC` | Asagi — interactive (Lc −48.9) |
+| `--surface-base` | `#1B2A4A` | Kachiiro — victory color |
+| `--surface-raised` | `#1A2744` | Nōkon — deep navy |
+| `--text-primary` | `#F5F4EF` | Shironeri — primary text |
+| `--text-secondary` | `#4DB3CC` | Asagi — interactive labels |
+
+---
+
+## Spacing Scale — Ma (間)
+
+The spacing scale encodes the Japanese concept of *ma* — the meaningful space between things.
+
+| Token | Value | Use |
+|---|---|---|
+| `--space-1` | `4px` | Micro gaps |
+| `--space-2` | `8px` | Icon padding, badge gap |
+| `--space-3` | `12px` | Button padding (sm) |
+| `--space-4` | `16px` | Input padding, button padding (md) |
+| `--space-6` | `24px` | Component internal spacing |
+| `--space-8` | `32px` | Card padding |
+| `--space-sm` | `16px` | Component-to-component |
+| `--space-md` | `24px` | Section inner padding |
+| `--space-lg` | `40px` | Between content blocks |
+| `--space-xl` | `64px` | Between major sections |
+| `--space-2xl` | `96px` | Page section separation |
+
+---
+
+## Typography
+
+| Token | Value | Usage |
+|---|---|---|
+| `--font-display` | Noto Serif JP, Cormorant Garamond | Headings, display text |
+| `--font-body` | Inter, Noto Sans JP | All body text |
+| `--font-mono` | JetBrains Mono, Fira Code | Code |
+
+---
+
+## Border Radius
+
+**Hard ceiling: 8px.** Soft forms contradict budo geometry.
+
+| Token | Value | Use |
+|---|---|---|
+| `--radius-sm` | `2px` | Inputs, badges, tags |
+| `--radius-md` | `4px` | Buttons, dropdowns |
+| `--radius-lg` | `8px` | Cards, modals, panels |
+
+---
+
+## Motion — Zanshin Transitions
+
+Every interaction leaves a trace of awareness.
+
+| Token | Value | Character |
+|---|---|---|
+| `--ease-zen` | `cubic-bezier(0.4, 0.0, 0.2, 1)` | Deliberate, revealing |
+| `--ease-kendo` | `cubic-bezier(0.25, 0.46, 0.45, 0.94)` | Controlled, micro-interactions |
+| `--ease-strike` | `cubic-bezier(0.0, 0.0, 0.2, 1)` | Fast in, soft out — decisive |
+| `--duration-short` | `300ms` | Minimum — no transition under this |
+| `--duration-slow` | `400ms` | Standard component transitions |
+| `--duration-medium` | `500ms` | Reveals, page elements |
+| `--duration-long` | `800ms` | Scroll reveals, yugen moments |
