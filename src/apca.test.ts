@@ -12,12 +12,16 @@
  * This suite recomputes Lc from the live hex values on every run. It never
  * trusts the stored `lc` field as truth — that field itself is under test.
  *
- * Three assertion layers:
+ * Four assertion layers:
  *
  *   1. Lc annotation accuracy   — stored lc matches live computation (±1.0 tolerance)
  *   2. Passing pairs            — any pair marked passes:true clears its threshold
  *   3. Intentional failures     — pairs marked passes:false stay below threshold
  *                                 (regression: someone "fixes" the hex but forgets to promote passes)
+ *   4. Named-pair integrity lock — specific prohibited pairs are pinned by label.
+ *                                 passes:false is asserted unconditionally, regardless
+ *                                 of live Lc or threshold. Changing the label breaks
+ *                                 the test by name — no silent promotion is possible.
  *
  * Modes under test
  * ─────────────────
@@ -38,6 +42,12 @@
  *   1. Add it to the relevant validatedPairs array in tokens.ts
  *   2. Set passes: true if it clears its threshold
  *   3. Run this suite — it will verify the Lc annotation and threshold
+ *
+ * To promote a Layer 4 locked pair:
+ *   1. You must change the pair's hex values so live Lc clears the threshold
+ *   2. You must set passes: true in tokens.ts
+ *   3. You must update the Layer 4 describe block to remove or amend the lock
+ *   4. All three steps are required — skipping any one leaves a failing test
  */
 
 import { describe, it, expect } from 'vitest';
@@ -481,6 +491,199 @@ describe('APCA contrast regression', () => {
     it('AIZOME_DARK_TOKENS Lc annotations match live computation within ±1.0', () => {
       const drifts = findAnnotationDrift(AIZOME_DARK_TOKENS);
       expect(drifts, driftMessage('aizome-dark-sumi', drifts)).toHaveLength(0);
+    });
+  });
+
+  // ── Layer 4: named-pair integrity locks (sumi-e dark prohibitions) ──────────
+  //
+  // Layer 3 (intentional-failure guard) catches the case where a hex change
+  // silently pushes a pair past its threshold. But it operates generically
+  // over the whole validatedPairs array — it cannot prevent a designer from
+  // removing the pair entirely, renaming it, or flipping passes:true on
+  // a pair that physically cannot pass its threshold without the test knowing.
+  //
+  // Layer 4 closes that gap for the two hardest prohibitions in the sumi-e
+  // dark ground:
+  //
+  //   • asagi-on-ao-sumi   (#5B8FA8 on #141820, Lc −39.6)
+  //       — fails interactive threshold (Lc 45) on ao-sumi
+  //       — passed on kachiiro (Lc −47.5) — ground-dependent prohibition
+  //       — the subtlety makes accidental promotion likely
+  //
+  //   • aiiro-on-ao-sumi   (#2B5BA8 on #141820, Lc −20.3)
+  //       — same indigo hue family — insufficient for any text use
+  //       — also prohibited on kachiiro (Lc −15.1) but even worse here
+  //
+  // Mechanism — each lock asserts three independent things:
+  //
+  //   A. The pair exists in AIZOME_DARK_TOKENS.validatedPairs (by label fragment).
+  //      Rename or delete it and assertion A fails by name.
+  //
+  //   B. Its `passes` field is false.
+  //      Flip passes:true without touching this block and assertion B fails.
+  //
+  //   C. Its live Lc from the APCA engine is physically below its threshold.
+  //      Change the hex so the pair now actually clears the threshold and
+  //      assertion C fails, forcing a deliberate review.
+  //
+  //   D. Its declared `threshold` is still 45 (interactive).
+  //      Downgrade threshold to 30 to silence layer 3 and assertion D fails.
+  //
+  // Promotion protocol (for future maintainers)
+  // ─────────────────────────────────────────────────────────────────────────
+  //   1. Verify live Lc clears 45 via computeAPCA()
+  //   2. Set passes: true in AIZOME_DARK_TOKENS.validatedPairs in tokens.ts
+  //   3. Remove or amend the corresponding lock in Layer 4 below
+  //   4. Add a new passing spot-check in the sumi-e dark describe block above
+  //
+  //   All four steps are required. Skipping any one leaves a failing test.
+
+  describe('Layer 4: named-pair integrity locks', () => {
+
+    // Helper: find a pair by label substring — substring match so minor
+    // wording tweaks surface a clear "not found" error, not an undefined crash.
+    function requirePair(fragment: string): APCAPair {
+      const pair = AIZOME_DARK_TOKENS.validatedPairs.find(p =>
+        p.label.toLowerCase().includes(fragment.toLowerCase())
+      );
+      if (!pair) {
+        throw new Error(
+          `[zanshin] Layer 4 integrity lock: no pair matching "${fragment}" found in ` +
+          `AIZOME_DARK_TOKENS.validatedPairs.\n` +
+          `  If the pair was renamed, update the label fragment in apca.test.ts Layer 4.\n` +
+          `  If it was deleted, restore it or explicitly remove the lock.`
+        );
+      }
+      return pair;
+    }
+
+    // ── Lock A: asagi as interactive on ao-sumi ───────────────────────────────
+    //
+    // Asagi (#5B8FA8) clears Lc 45 on kachiiro (#1B2A4A, Lc −47.5) but
+    // falls to Lc −39.6 on ao-sumi (#141820). The prohibition is
+    // ground-dependent — the most likely kind to be accidentally promoted.
+
+    describe('asagi-on-ao-sumi: prohibited as interactive element', () => {
+
+      it('pair exists in AIZOME_DARK_TOKENS (label: "Asagi as interactive on ao-sumi — PROHIBITED")', () => {
+        // If this fails, the pair was renamed or removed.
+        // Restore it, or update the label fragment above and remove the lock.
+        expect(() => requirePair('asagi as interactive on ao-sumi')).not.toThrow();
+      });
+
+      it('asagi-on-ao-sumi passes field is false — pair is not promotable without updating this lock', () => {
+        const pair = requirePair('asagi as interactive on ao-sumi');
+        expect(
+          pair.passes,
+          `[zanshin] Layer 4 lock violated: "${pair.label}" has passes:true.\n` +
+          `  Asagi (${pair.fg}) on ao-sumi (${pair.bg}) achieves Lc ` +
+          `${computeAPCA(pair.fg, pair.bg).toFixed(1)} — below the interactive threshold (≥45).\n` +
+          `  Use mizuasagi (#8AAFC0, Lc −55.8) for interactive elements on ao-sumi.\n` +
+          `  Promotion protocol: (1) verify live Lc ≥ 45, (2) set passes:true in tokens.ts, ` +
+          `(3) remove this lock, (4) add a passing spot-check above.`
+        ).toBe(false);
+      });
+
+      it('asagi-on-ao-sumi fg is #5B8FA8 and bg is #141820 — hex pinned to prohibition baseline', () => {
+        const pair = requirePair('asagi as interactive on ao-sumi');
+        expect(
+          pair.fg,
+          `[zanshin] Layer 4: asagi-on-ao-sumi fg changed from #5B8FA8 to ${pair.fg}.\n` +
+          `  Recompute Lc with the new hex and re-evaluate whether the prohibition still holds.`
+        ).toBe('#5B8FA8');
+        expect(
+          pair.bg,
+          `[zanshin] Layer 4: asagi-on-ao-sumi bg changed from #141820 to ${pair.bg}.\n` +
+          `  If ao-sumi was lightened, recompute Lc — the prohibition may no longer apply.`
+        ).toBe('#141820');
+      });
+
+      it('asagi-on-ao-sumi live Lc is below interactive threshold Lc 45 — prohibition is physically grounded', () => {
+        // Physics assertion: the APCA engine must confirm asagi cannot clear
+        // Lc 45 on ao-sumi regardless of what tokens.ts declares.
+        // If this fails, the palette changed and the prohibition needs review.
+        const pair = requirePair('asagi as interactive on ao-sumi');
+        const liveLc = computeAPCA(pair.fg, pair.bg);
+        expect(
+          Math.abs(liveLc),
+          `[zanshin] Layer 4: asagi (${pair.fg}) on ao-sumi (${pair.bg}) now achieves ` +
+          `Lc ${liveLc.toFixed(1)}, clearing the interactive threshold (≥45).\n` +
+          `  Prohibition may be stale. Promotion protocol: (1) set passes:true, ` +
+          `(2) update minSize, (3) remove this lock, (4) add a passing spot-check.`
+        ).toBeLessThan(45);
+      });
+
+      it('asagi-on-ao-sumi threshold is 45 (interactive) — not silently downgraded', () => {
+        // Guard against threshold demotion: keeping passes:false but lowering
+        // threshold to 30 so layer 3 stops catching it as a failure.
+        const pair = requirePair('asagi as interactive on ao-sumi');
+        expect(
+          pair.threshold,
+          `[zanshin] Layer 4: asagi-on-ao-sumi threshold changed from 45 to ${pair.threshold}.\n` +
+          `  The threshold must remain 45 (interactive) to preserve the prohibition's meaning.`
+        ).toBe(45);
+      });
+    });
+
+    // ── Lock B: aiiro on ao-sumi ──────────────────────────────────────────────
+    //
+    // Aiiro (#2B5BA8) on ao-sumi (#141820): Lc −20.3. Same indigo hue family
+    // as the background. Insufficient for any text or interactive purpose.
+    // Worse than on kachiiro (Lc −15.1). Absolute prohibition.
+
+    describe('aiiro-on-ao-sumi: prohibited for all text and interactive use', () => {
+
+      it('pair exists in AIZOME_DARK_TOKENS (label: "Aiiro on ao-sumi — PROHIBITED")', () => {
+        expect(() => requirePair('aiiro on ao-sumi')).not.toThrow();
+      });
+
+      it('aiiro-on-ao-sumi passes field is false — pair is not promotable without updating this lock', () => {
+        const pair = requirePair('aiiro on ao-sumi');
+        expect(
+          pair.passes,
+          `[zanshin] Layer 4 lock violated: "${pair.label}" has passes:true.\n` +
+          `  Aiiro (${pair.fg}) on ao-sumi (${pair.bg}) achieves Lc ` +
+          `${computeAPCA(pair.fg, pair.bg).toFixed(1)} — same indigo hue family as the ground.\n` +
+          `  This pair is insufficient for any text or interactive use.\n` +
+          `  Promotion protocol: (1) verify live Lc ≥ 45, (2) set passes:true in tokens.ts, ` +
+          `(3) remove this lock, (4) add a passing spot-check above.`
+        ).toBe(false);
+      });
+
+      it('aiiro-on-ao-sumi fg is #2B5BA8 and bg is #141820 — hex pinned to prohibition baseline', () => {
+        const pair = requirePair('aiiro on ao-sumi');
+        expect(
+          pair.fg,
+          `[zanshin] Layer 4: aiiro-on-ao-sumi fg changed from #2B5BA8 to ${pair.fg}.\n` +
+          `  Recompute Lc with the new hex and re-evaluate whether the prohibition still holds.`
+        ).toBe('#2B5BA8');
+        expect(
+          pair.bg,
+          `[zanshin] Layer 4: aiiro-on-ao-sumi bg changed from #141820 to ${pair.bg}.\n` +
+          `  If ao-sumi was lightened, recompute Lc — the prohibition may no longer apply.`
+        ).toBe('#141820');
+      });
+
+      it('aiiro-on-ao-sumi live Lc is below interactive threshold Lc 45 — prohibition is physically grounded', () => {
+        const pair = requirePair('aiiro on ao-sumi');
+        const liveLc = computeAPCA(pair.fg, pair.bg);
+        expect(
+          Math.abs(liveLc),
+          `[zanshin] Layer 4: aiiro (${pair.fg}) on ao-sumi (${pair.bg}) now achieves ` +
+          `Lc ${liveLc.toFixed(1)}, clearing the interactive threshold (≥45).\n` +
+          `  Promotion protocol: (1) set passes:true, (2) update minSize, ` +
+          `(3) remove this lock, (4) add a passing spot-check.`
+        ).toBeLessThan(45);
+      });
+
+      it('aiiro-on-ao-sumi threshold is 45 (interactive) — not silently downgraded', () => {
+        const pair = requirePair('aiiro on ao-sumi');
+        expect(
+          pair.threshold,
+          `[zanshin] Layer 4: aiiro-on-ao-sumi threshold changed from 45 to ${pair.threshold}.\n` +
+          `  The threshold must remain 45 (interactive) to preserve the prohibition's meaning.`
+        ).toBe(45);
+      });
     });
   });
 
