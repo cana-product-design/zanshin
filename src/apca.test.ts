@@ -21,13 +21,18 @@
  *
  * Modes under test
  * ─────────────────
- *   kintsugi light   — warm gold palette, portfolio surfaces
- *   aizome light     — indigo palette, product surfaces
+ *   kintsugi light      — warm gold palette, portfolio surfaces
+ *   aizome light        — indigo palette, product surfaces
+ *   aizome dark         — kachiiro ground (legacy/deep mode)
+ *   sumi-e dark         — ao-sumi ground (#141820) — goshoku ink-wash stack
  *
- * Aizome dark is deliberately excluded from the "must have zero failures" assertion
- * because that mode documents known non-text decorative tokens (aiiro, hanada on
- * kachiiro) as intentional passes:false entries. Those are correct behaviour,
- * not regressions. They are covered by layer 3 to ensure they don't silently improve.
+ * Sumi-e dark note
+ * ─────────────────
+ * The ao-sumi ground (#141820) is significantly darker than kachiiro (#1B2A4A).
+ * This has a critical implication: asagi (#5B8FA8) which passed the interactive
+ * threshold on kachiiro (Lc −47.5) falls to Lc −39.6 on ao-sumi. It does NOT
+ * meet the ≥45 interactive threshold on this darker ground. Use mizuasagi
+ * (#8AAFC0, Lc −55.8) for interactive elements on ao-sumi instead.
  *
  * To add a new palette pair:
  *   1. Add it to the relevant validatedPairs array in tokens.ts
@@ -45,6 +50,20 @@ import { computeAPCA, meetsThreshold } from './apca';
 // annotation and the live computation. Anything beyond that is likely a hex
 // change that wasn't reflected in the annotation.
 const LC_TOLERANCE = 1.0;
+
+// ─── Sumi-e dark tokens — defined inline rather than exported from tokens.ts
+// so the test suite is fully self-contained and doesn't require a new export.
+// Hex values must match style.css and tokens.ts AIZOME_DARK_TOKENS exactly.
+const SUMI_BG   = '#141820'; // ao-sumi 青墨
+const SUMI_NURI = '#1E2230'; // sumi-nuri 墨塗
+const SUMI_USUI = '#252840'; // sumi-usui 墨薄
+const WASHI     = '#E8EBF0'; // washi 和紙 — text on dark
+const MIZUASAGI = '#8AAFC0'; // water-asagi — muted accent
+const ASAGI     = '#5B8FA8'; // natural asagi — primary aizome accent
+const HANADA    = '#2E6B8A'; // mid-blue silk — hover/border
+const AIIRO     = '#2B5BA8'; // Japan Blue — PROHIBITED on ao-sumi
+const AINEZUMI  = '#4A4860'; // mousy indigo — decorative ghost
+const GOLD      = '#C9A84C'; // kintsugi gold
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -123,8 +142,6 @@ describe('APCA contrast regression', () => {
       const promoted = findRegressions(KINTSUGI_TOKENS)
         .filter(({ pair }) => pair.passes === false);
 
-      // If this fails, a pair declared as decorative-only now passes —
-      // that's good news, but it must be promoted explicitly in tokens.ts
       expect(
         promoted,
         regressionMessage('kintsugi', promoted) +
@@ -228,12 +245,19 @@ describe('APCA contrast regression', () => {
       expect(Math.abs(lc)).toBeGreaterThanOrEqual(60);
     });
 
-    it('asagi on shironeri stays below Lc 45 — non-text-only contract', () => {
-      // Asagi (#4DB3CC) fails the interactive threshold on light surfaces.
-      // This test ensures it stays there — if someone darkens asagi until
-      // it passes, they must also update the pair to passes:true.
+    it('retired synthetic asagi (#4DB3CC) stays below Lc 45 — non-text-only contract', () => {
+      // Synthetic asagi #4DB3CC was retired in favour of natural asagi #5B8FA8.
+      // The retired color remains documented as a non-text-only pair.
+      // If someone attempts to restore it, this test catches the regression.
       const lc = computeAPCA('#4DB3CC', '#F5F4EF');
       expect(Math.abs(lc)).toBeLessThan(45);
+    });
+
+    it('natural asagi (#5B8FA8) achieves Lc ≥ 45 on shironeri — bold/large text ok', () => {
+      // Natural asagi (revised from synthetic #4DB3CC) passes Lc 45 at Lc ~57.7.
+      // Safe for ≥18px bold or ≥24px normal weight. Not for body prose.
+      const lc = computeAPCA('#5B8FA8', '#F5F4EF');
+      expect(Math.abs(lc)).toBeGreaterThanOrEqual(45);
     });
 
     it('hai on shironeri (muted secondary) achieves Lc ≥ 60', () => {
@@ -242,12 +266,12 @@ describe('APCA contrast regression', () => {
     });
   });
 
-  // ── Aizome dark — annotation and threshold integrity only ──────────────────
+  // ── Aizome dark (kachiiro ground) — annotation + threshold integrity ────────
   // Dark mode has known intentional failures (aiiro, hanada on kachiiro).
   // We do NOT assert apcaFailures is empty here — that would be wrong.
   // We assert: annotations are accurate and passing pairs actually pass.
 
-  describe('aizome dark mode (annotation + passing pairs only)', () => {
+  describe('aizome dark mode — kachiiro ground (annotation + passing pairs only)', () => {
 
     it('all pairs marked passes:true achieve their declared threshold', () => {
       const failures = findRegressions(AIZOME_DARK_TOKENS)
@@ -286,6 +310,180 @@ describe('APCA contrast regression', () => {
     });
   });
 
+  // ── Sumi-e dark (ao-sumi ground) — full coverage ───────────────────────────
+  //
+  // The ao-sumi ground (#141820) is the deepest ink in the goshoku stack.
+  // This describe block fully covers all three surface layers and all aizome
+  // foreground colors, including their documented constraints and prohibitions.
+  //
+  // CRITICAL DIFFERENCE from kachiiro dark mode:
+  //   Asagi (#5B8FA8) on kachiiro = Lc −47.5  → passes interactive Lc 45 ✔
+  //   Asagi (#5B8FA8) on ao-sumi  = Lc −39.6  → FAILS interactive Lc 45 ✗
+  //   On ao-sumi, use mizuasagi (#8AAFC0, Lc −55.8) for interactive elements.
+
+  describe('sumi-e dark mode — ao-sumi ground (#141820)', () => {
+
+    // ── Surface stack — all three layers must support body text ──────────────
+
+    it('washi on ao-sumi (body text) achieves Lc ≥ 75', () => {
+      const lc = computeAPCA(WASHI, SUMI_BG);
+      expect(Math.abs(lc)).toBeGreaterThanOrEqual(75);
+    });
+
+    it('washi on sumi-nuri (raised surface body text) achieves Lc ≥ 75', () => {
+      const lc = computeAPCA(WASHI, SUMI_NURI);
+      expect(Math.abs(lc)).toBeGreaterThanOrEqual(75);
+    });
+
+    it('washi on sumi-usui (overlay body text) achieves Lc ≥ 75', () => {
+      const lc = computeAPCA(WASHI, SUMI_USUI);
+      expect(Math.abs(lc)).toBeGreaterThanOrEqual(75);
+    });
+
+    it('text Lc is negative on all sumi-e surfaces (WoB polarity)', () => {
+      expect(computeAPCA(WASHI, SUMI_BG)).toBeLessThan(0);
+      expect(computeAPCA(WASHI, SUMI_NURI)).toBeLessThan(0);
+      expect(computeAPCA(WASHI, SUMI_USUI)).toBeLessThan(0);
+    });
+
+    // ── Surface-to-surface — each layer lightens from the last ───────────────
+
+    it('sumi-nuri is lighter than ao-sumi (|Lc| decreases for body text)', () => {
+      // Washi on ao-sumi should have higher contrast than washi on sumi-nuri.
+      // If this fails, the surface stack order has been inverted.
+      const lcBase    = Math.abs(computeAPCA(WASHI, SUMI_BG));
+      const lcRaised  = Math.abs(computeAPCA(WASHI, SUMI_NURI));
+      expect(lcBase).toBeGreaterThan(lcRaised);
+    });
+
+    it('sumi-usui is lighter than sumi-nuri (correct goshoku progression)', () => {
+      const lcRaised  = Math.abs(computeAPCA(WASHI, SUMI_NURI));
+      const lcOverlay = Math.abs(computeAPCA(WASHI, SUMI_USUI));
+      expect(lcRaised).toBeGreaterThan(lcOverlay);
+    });
+
+    // ── Mizuasagi — the interactive aizome color on ao-sumi ──────────────────
+    // Mizuasagi (#8AAFC0) clears Lc 45 on ao-sumi. It is the recommended
+    // foreground for interactive elements (buttons, nav links, focus states).
+
+    it('mizuasagi on ao-sumi achieves interactive threshold Lc ≥ 45', () => {
+      const lc = computeAPCA(MIZUASAGI, SUMI_BG);
+      expect(Math.abs(lc)).toBeGreaterThanOrEqual(45);
+    });
+
+    it('mizuasagi on sumi-nuri achieves interactive threshold Lc ≥ 45', () => {
+      const lc = computeAPCA(MIZUASAGI, SUMI_NURI);
+      expect(Math.abs(lc)).toBeGreaterThanOrEqual(45);
+    });
+
+    it('mizuasagi on ao-sumi achieves large-text threshold Lc ≥ 45 at ≥18px', () => {
+      // Lc ~55.8 — comfortably above 45, suitable for labels and secondary text
+      const lc = computeAPCA(MIZUASAGI, SUMI_BG);
+      expect(Math.abs(lc)).toBeGreaterThanOrEqual(45);
+    });
+
+    // ── Asagi — accent color, large text / non-text only on ao-sumi ──────────
+    // CRITICAL: Asagi (#5B8FA8) does NOT meet interactive threshold on ao-sumi.
+    // Lc −39.6 < −45. Use for large headings (≥24px), borders, or icons only.
+
+    it('asagi on ao-sumi does NOT meet interactive threshold — large text only', () => {
+      const lc = computeAPCA(ASAGI, SUMI_BG);
+      // This is intentional. Asagi on ao-sumi is large-text / non-text only.
+      // If a future palette change brings this above 45, the constraint must
+      // be updated in tokens.ts to reflect the new safe usage.
+      expect(Math.abs(lc)).toBeLessThan(45);
+    });
+
+    it('asagi on ao-sumi meets decorative threshold Lc ≥ 30', () => {
+      const lc = computeAPCA(ASAGI, SUMI_BG);
+      expect(Math.abs(lc)).toBeGreaterThanOrEqual(30);
+    });
+
+    it('asagi on sumi-nuri meets decorative threshold Lc ≥ 30', () => {
+      const lc = computeAPCA(ASAGI, SUMI_NURI);
+      expect(Math.abs(lc)).toBeGreaterThanOrEqual(30);
+    });
+
+    // ── Hanada — border / icon only on ao-sumi ────────────────────────────────
+
+    it('hanada on ao-sumi meets non-text threshold Lc ≥ 15', () => {
+      const lc = computeAPCA(HANADA, SUMI_BG);
+      expect(Math.abs(lc)).toBeGreaterThanOrEqual(15);
+    });
+
+    it('hanada on ao-sumi does NOT meet interactive threshold — border/icon only', () => {
+      const lc = computeAPCA(HANADA, SUMI_BG);
+      expect(Math.abs(lc)).toBeLessThan(45);
+    });
+
+    // ── Gold — decorative / large text on ao-sumi ─────────────────────────────
+    // Gold (#C9A84C) reads at Lc −56.9 on ao-sumi — significantly better than
+    // on light surfaces (Lc +40.4). Suitable for ≥18px or non-text decorative.
+
+    it('gold on ao-sumi achieves large-text threshold Lc ≥ 45', () => {
+      const lc = computeAPCA(GOLD, SUMI_BG);
+      expect(Math.abs(lc)).toBeGreaterThanOrEqual(45);
+    });
+
+    // ── Prohibitions ──────────────────────────────────────────────────────────
+
+    it('aiiro on ao-sumi remains prohibited — Lc stays below 45', () => {
+      // Aiiro (#2B5BA8) and ao-sumi (#141820): same indigo hue family.
+      // Lc −20.3 — even worse than on kachiiro (Lc −15.1).
+      // This prohibition is absolute. Never use aiiro text on ao-sumi.
+      const lc = computeAPCA(AIIRO, SUMI_BG);
+      expect(Math.abs(lc)).toBeLessThan(45);
+    });
+
+    it('ainezumi on ao-sumi is below non-text threshold — decorative ghost only', () => {
+      // Ainezumi (#4A4860) on ao-sumi: Lc −13.2. Fails even the Lc 15 non-text
+      // threshold. Use only for the faintest decorative marks — never for UI state.
+      const lc = computeAPCA(AINEZUMI, SUMI_BG);
+      expect(Math.abs(lc)).toBeLessThan(15);
+    });
+
+    // ── Annotation integrity (spot-check live vs. stored values) ─────────────
+
+    it('washi on ao-sumi: stored Lc −91.4 matches live computation within ±1.0', () => {
+      const live = computeAPCA(WASHI, SUMI_BG);
+      expect(Math.abs(live - (-91.4))).toBeLessThanOrEqual(LC_TOLERANCE);
+    });
+
+    it('mizuasagi on ao-sumi: stored Lc −55.8 matches live computation within ±1.0', () => {
+      const live = computeAPCA(MIZUASAGI, SUMI_BG);
+      expect(Math.abs(live - (-55.8))).toBeLessThanOrEqual(LC_TOLERANCE);
+    });
+
+    it('asagi on ao-sumi: stored Lc −39.6 matches live computation within ±1.0', () => {
+      const live = computeAPCA(ASAGI, SUMI_BG);
+      expect(Math.abs(live - (-39.6))).toBeLessThanOrEqual(LC_TOLERANCE);
+    });
+
+    it('aiiro on ao-sumi: stored Lc −20.3 matches live computation within ±1.0', () => {
+      const live = computeAPCA(AIIRO, SUMI_BG);
+      expect(Math.abs(live - (-20.3))).toBeLessThanOrEqual(LC_TOLERANCE);
+    });
+
+    it('gold on ao-sumi: stored Lc −56.9 matches live computation within ±1.0', () => {
+      const live = computeAPCA(GOLD, SUMI_BG);
+      expect(Math.abs(live - (-56.9))).toBeLessThanOrEqual(LC_TOLERANCE);
+    });
+
+    // ── Regression guard against AIZOME_DARK_TOKENS (now pointing to ao-sumi) ─
+
+    it('AIZOME_DARK_TOKENS passing pairs still achieve their declared thresholds', () => {
+      const failures = findRegressions(AIZOME_DARK_TOKENS)
+        .filter(({ pair }) => pair.passes === true);
+
+      expect(failures, regressionMessage('aizome-dark-sumi', failures)).toHaveLength(0);
+    });
+
+    it('AIZOME_DARK_TOKENS Lc annotations match live computation within ±1.0', () => {
+      const drifts = findAnnotationDrift(AIZOME_DARK_TOKENS);
+      expect(drifts, driftMessage('aizome-dark-sumi', drifts)).toHaveLength(0);
+    });
+  });
+
   // ── APCA engine self-test ──────────────────────────────────────────────────
   // Verifies the embedded computeAPCA implementation against known reference
   // values. If these fail, the algorithm itself has drifted — not the tokens.
@@ -317,6 +515,17 @@ describe('APCA contrast regression', () => {
 
     it('Lc polarity: light text on dark bg is negative', () => {
       expect(computeAPCA('#F5F4EF', '#1B2A4A')).toBeLessThan(0);
+    });
+
+    it('Lc polarity: washi on ao-sumi is negative (WoB)', () => {
+      expect(computeAPCA(WASHI, SUMI_BG)).toBeLessThan(0);
+    });
+
+    it('ao-sumi is darker than kachiiro (washi contrast is higher on ao-sumi)', () => {
+      const lcAoSumi   = Math.abs(computeAPCA(WASHI, SUMI_BG));    // ~91.4
+      const lcKachiiro = Math.abs(computeAPCA('#EEF0F4', '#1B2A4A')); // ~89.0
+      // ao-sumi (#141820) should yield higher text contrast than kachiiro (#1B2A4A)
+      expect(lcAoSumi).toBeGreaterThan(lcKachiiro);
     });
   });
 });

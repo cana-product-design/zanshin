@@ -1,4 +1,4 @@
-import{j as e}from"./jsx-runtime-DiklIkkE.js";import{useMDXComponents as r}from"./index-ChEI-nsM.js";import{M as t}from"./index-CEAXvSCQ.js";import"./index-DRjF_FHU.js";import"./iframe-DPkBEacT.js";import"./index-BKlBQwGM.js";import"./index-D-Mha1DF.js";import"./index-DrFu-skq.js";function s(i){const n={code:"code",h1:"h1",h2:"h2",hr:"hr",li:"li",ol:"ol",p:"p",pre:"pre",strong:"strong",ul:"ul",...r(),...i.components};return e.jsxs(e.Fragment,{children:[`
+import{j as e}from"./jsx-runtime-DiklIkkE.js";import{useMDXComponents as r}from"./index-ChEI-nsM.js";import{M as t}from"./index-BLc3uEph.js";import"./index-DRjF_FHU.js";import"./iframe-Bc2Et7wJ.js";import"./index-BKlBQwGM.js";import"./index-D-Mha1DF.js";import"./index-DrFu-skq.js";function s(i){const n={code:"code",h1:"h1",h2:"h2",hr:"hr",li:"li",ol:"ol",p:"p",pre:"pre",strong:"strong",ul:"ul",...r(),...i.components};return e.jsxs(e.Fragment,{children:[`
 `,`
 `,e.jsx(t,{title:"Docs/Accessibility"}),`
 `,e.jsx(n.h1,{id:"accessibility--apca-audit",children:"Accessibility — APCA Audit"}),`

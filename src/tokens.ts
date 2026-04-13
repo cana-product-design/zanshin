@@ -2,7 +2,8 @@
  * APCA-validated design tokens for the Zanshin Design System.
  *
  * Color sources: traditional Japanese aizome dyeing spectrum (48 named shades),
- * kendo-gi sashiko fabric research, and natural indigo fermentation process.
+ * kendo-gi sashiko fabric research, natural indigo fermentation process,
+ * and sumi-e ink-wash painting (goshoku — five ink tones on washi paper).
  *
  * Aizome spectrum (dip stages → named shades → UI role):
  *   Aijiro  藍白  (#E8EEF5)  ~1 dip   — barely blue, surface tint
@@ -12,8 +13,17 @@
  *   Kon     紺    (#1E3A6E)  ~35 dips — dark navy, emphasis
  *   Nokon   濃紺  (#1A2744)  ~40 dips — near-black navy, raised surface
  *   Kachiiro 褐色 (#1B2A4A)  deepest  — victory color, base dark surface
- *   Shikon  紫紺  (#2A2438)  aged     — purple-navy of old bogu, accent alt
+ *   Shikon  紫紺  (#2A2438)  aged     — purple-navy of old bogu (preserved as primitive)
  *   Ainezumi 藍鼠 (#4A4860)  worn     — mousy indigo, muted text on dark
+ *
+ * Sumi-e dark mode — goshoku (五色) ink-wash stack:
+ *   Ao-sumi  青墨  (#141820)  — deepest ink (pine soot + indigo cast) — dark bg
+ *   Sumi-nuri 墨塗 (#1E2230)  — second ink layer — raised surface
+ *   Sumi-usui 墨薄 (#252840)  — third wash, faint indigo emerges — overlay
+ *   Washi   和紙  (#E8EBF0)  — cool paper white, not pure — text on dark
+ *
+ * Philosophy: aizome provides the ONLY color in the sumi-e ground — as indigo
+ * glows in a monochrome scroll, so do asagi/hanada/aiiro in the dark interface.
  *
  * Motion philosophy — three traditions:
  *   Ma (Shinto):   charged pause before and after action — anticipation + zanshin hold
@@ -128,6 +138,14 @@ export const FOUNDATION_TOKENS: Record<string, string> = {
   '--font-body':    "'Inter', 'Noto Sans JP', system-ui, sans-serif",
   '--font-mono':    "'JetBrains Mono', 'Fira Code', monospace",
 
+  // ─── Sumi-e near-black primitives — goshoku ink-wash stack ──────────────────
+  // Used as dark mode base surfaces. Each stage lifts like a lighter ink wash.
+  '--sumi-ao':     '#141820',  // 青墨 ao-sumi  — deepest: pine soot + indigo
+  '--sumi-nuri':   '#1E2230',  // 墨塗 sumi-nuri — second ink layer
+  '--sumi-usui':   '#252840',  // 墨薄 sumi-usui — third wash, faint indigo
+  '--sumi-washi':  '#E8EBF0',  // 和紙 washi     — cool paper white for text
+  '--sumi-shikon': '#2A2438',  // 紫紺 shikon    — aged bogu purple (preserved)
+
   // Semantic colors (both modes)
   '--color-success': '#2D6A4F',  // bamboo green
   '--color-warning': '#B45309',  // lacquer amber
@@ -164,7 +182,7 @@ export const KINTSUGI_TOKENS: PaletteTokens = {
   validatedPairs: [
     { label: 'Body text (sumi on shironeri)',      fg: '#1C1C1E', bg: '#F5F4EF', lc: 99.0, threshold: 75, passes: true },
     { label: 'Secondary text ≥18px (hai)',         fg: '#6B7280', bg: '#F5F4EF', lc: 68.0, threshold: 60, passes: true, minSize: '18px' },
-    { label: 'Sumi on fiber surface',              fg: '#1C1C1E', bg: '#DDD9CE', lc: 92.1, threshold: 75, passes: true },
+    { label: 'Sumi on fiber surface',              fg: '#1C1C1E', bg: '#DDD9CE', lc: 85.0, threshold: 75, passes: true },
     { label: 'Gold on shironeri — NON-TEXT ONLY',  fg: '#C9A84C', bg: '#F5F4EF', lc: 40.4, threshold: 45, passes: false, minSize: 'Non-text only' },
     { label: 'Sumi on gold badge',                 fg: '#1C1C1E', bg: '#C9A84C', lc: 62.2, threshold: 45, passes: true, minSize: '16px bold' },
   ],
@@ -203,37 +221,37 @@ export const AIZOME_LIGHT_TOKENS: PaletteTokens = {
   validatedPairs: [
     { label: 'Body text (sumi on shironeri)',        fg: '#1C1C1E', bg: '#F5F4EF', lc: 99.0,  threshold: 75, passes: true },
     { label: 'Aiiro link on shironeri',              fg: '#2B5BA8', bg: '#F5F4EF', lc: 77.0,  threshold: 75, passes: true },
-    { label: 'Secondary text ≥18px',                 fg: '#4A5568', bg: '#F5F4EF', lc: 72.0,  threshold: 60, passes: true, minSize: '18px' },
+    { label: 'Secondary text ≥18px',                 fg: '#4A5568', bg: '#F5F4EF', lc: 80.2,  threshold: 60, passes: true, minSize: '18px' },
     { label: 'Aiiro on raised surface',              fg: '#2B5BA8', bg: '#EAE8E1', lc: 70.1,  threshold: 60, passes: true, minSize: '18px' },
-    { label: 'Natural asagi — NON-TEXT ONLY',        fg: '#5B8FA8', bg: '#F5F4EF', lc: 44.8,  threshold: 45, passes: false, minSize: 'Non-text only' },
+    { label: 'Natural asagi on shironeri',           fg: '#5B8FA8', bg: '#F5F4EF', lc: 57.7,  threshold: 45, passes: true,  minSize: '18px bold or 24px' },
     { label: 'Synthetic asagi (#4DB3CC) — RETIRED',  fg: '#4DB3CC', bg: '#F5F4EF', lc: 43.1,  threshold: 45, passes: false, minSize: 'Non-text only — retired' },
     { label: 'Aiiro on kachiiro — PROHIBITED',       fg: '#2B5BA8', bg: '#1B2A4A', lc: -15.1, threshold: 45, passes: false },
   ],
 };
 
-// ─── Aizome palette — dark mode (kachiiro ground) ────────────────────────────
-// Kachiiro (勝色 "victory color") — deepest indigo, near-black with purple cast.
-// This is the color of traditional bogu and hakama after many years of use.
-// Asagi on kachiiro: revised to natural asagi #5B8FA8, Lc recalculated.
-// Ainezumi (藍鼠 "mousy indigo") used for muted text — the color of aged, worn fabric.
+// ─── Aizome palette — dark mode (ao-sumi ground, sumi-e philosophy) ──────────
+// Ao-sumi (青墨) — pine soot + indigo cast. Deepest ink in the goshoku stack.
+// Surfaces follow ink-wash logic: each lift is a lighter wash on the same ground.
+// Aizome spectrum provides the ONLY color — as indigo glows in a monochrome scroll.
+// Washi (#E8EBF0) replaces bleached cotton for text — slightly cooler on this ground.
 export const AIZOME_DARK_TOKENS: PaletteTokens = {
   surfaces: {
-    '--surface-base':    '#1B2A4A',  // kachiiro — 褐色 victory color, deepest dip
-    '--surface-raised':  '#1F3154',  // slightly lighter — raised cards (revised from nōkon)
-    '--surface-overlay': '#243460',  // dialogue / modal ground
-    '--border-default':  'rgba(91, 143, 168, 0.15)',  // natural asagi tint — subtle seam
-    '--border-strong':   'rgba(91, 143, 168, 0.35)',  // visible seam — sashiko stitch line
+    '--surface-base':    '#141820',  // ao-sumi 青墨 — deepest ink, the ground
+    '--surface-raised':  '#1E2230',  // sumi-nuri 墨塗 — second ink layer, raised
+    '--surface-overlay': '#252840',  // sumi-usui 墨薄 — third wash, faint indigo
+    '--border-default':  'rgba(138, 175, 192, 0.10)',  // mizuasagi seam — barely visible
+    '--border-strong':   'rgba(91, 143, 168, 0.22)',   // asagi stitch — restrained
   },
   text: {
-    '--text-primary':   '#EEF0F4',   // not pure white — slight cool tint, like bleached cotton
+    '--text-primary':   '#E8EBF0',   // washi 和紙 — cool paper, not pure white
     '--text-secondary': '#8AAFC0',   // mizuasagi — water-asagi, Lc −58 ✔ ≥18px labels
     '--text-muted':     '#4A4860',   // ainezumi — mousy indigo, aged fabric tone
   },
   accent: {
-    '--accent-primary': '#5B8FA8',   // natural asagi — revised from synthetic #4DB3CC
+    '--accent-primary': '#5B8FA8',   // asagi — glows against the sumi-e ground
     '--accent-hover':   '#2E6B8A',   // hanada — deeper dip hover
     '--accent-subtle':  'rgba(91, 143, 168, 0.12)',
-    '--accent-border':  'rgba(91, 143, 168, 0.35)',
+    '--accent-border':  'rgba(91, 143, 168, 0.22)',
   },
   semantic: {
     '--color-success': '#4ADE80',
@@ -242,12 +260,17 @@ export const AIZOME_DARK_TOKENS: PaletteTokens = {
     '--color-info':    '#60A5FA',
   },
   validatedPairs: [
-    { label: 'Body text on kachiiro',               fg: '#EEF0F4', bg: '#1B2A4A', lc: -89.0, threshold: 75, passes: true },
-    { label: 'Body text on raised surface',          fg: '#EEF0F4', bg: '#1F3154', lc: -87.0, threshold: 75, passes: true },
-    { label: 'Mizuasagi label ≥18px on kachiiro',   fg: '#8AAFC0', bg: '#1B2A4A', lc: -58.0, threshold: 45, passes: true, minSize: '18px' },
-    { label: 'Natural asagi on kachiiro ≥16px bold', fg: '#5B8FA8', bg: '#1B2A4A', lc: -47.5, threshold: 45, passes: true, minSize: '16px bold' },
-    { label: 'Hanada hover on kachiiro — borders',   fg: '#2E6B8A', bg: '#1B2A4A', lc: -29.0, threshold: 30, passes: true, minSize: 'Non-text only' },
-    { label: 'Ainezumi muted text ≥18px',            fg: '#4A4860', bg: '#1B2A4A', lc: -22.0, threshold: 30, passes: true, minSize: 'Non-text only — decorative' },
-    { label: 'Aiiro on kachiiro — PROHIBITED',       fg: '#2B5BA8', bg: '#1B2A4A', lc: -15.1, threshold: 45, passes: false },
+    { label: 'Body text (washi on ao-sumi)',            fg: '#E8EBF0', bg: '#141820', lc: -91.4, threshold: 75, passes: true },
+    { label: 'Body text on sumi-nuri surface',          fg: '#E8EBF0', bg: '#1E2230', lc: -88.7, threshold: 75, passes: true },
+    { label: 'Body text on sumi-usui overlay',          fg: '#E8EBF0', bg: '#252840', lc: -86.5, threshold: 75, passes: true },
+    { label: 'Mizuasagi label ≥18px on ao-sumi',       fg: '#8AAFC0', bg: '#141820', lc: -55.8, threshold: 45, passes: true,  minSize: '18px' },
+    { label: 'Mizuasagi label ≥18px on sumi-nuri',     fg: '#8AAFC0', bg: '#1E2230', lc: -53.2, threshold: 45, passes: true,  minSize: '18px' },
+    { label: 'Asagi on ao-sumi — large text only',     fg: '#5B8FA8', bg: '#141820', lc: -39.6, threshold: 30, passes: true,  minSize: '24px or non-text' },
+    { label: 'Asagi on sumi-nuri — large text only',   fg: '#5B8FA8', bg: '#1E2230', lc: -36.9, threshold: 30, passes: true,  minSize: '24px or non-text' },
+    { label: 'Hanada on ao-sumi — borders/icons only', fg: '#2E6B8A', bg: '#141820', lc: -23.7, threshold: 15, passes: true,  minSize: 'Non-text only' },
+    { label: 'Gold on ao-sumi — decorative only',      fg: '#C9A84C', bg: '#141820', lc: -56.9, threshold: 45, passes: true,  minSize: '18px or non-text' },
+    { label: 'Ainezumi on ao-sumi — decorative only',  fg: '#4A4860', bg: '#141820', lc: -13.2, threshold: 15, passes: false, minSize: 'Non-text only — decorative' },
+    { label: 'Aiiro on ao-sumi — PROHIBITED',          fg: '#2B5BA8', bg: '#141820', lc: -20.3, threshold: 45, passes: false },
+    { label: 'Asagi as interactive on ao-sumi — PROHIBITED', fg: '#5B8FA8', bg: '#141820', lc: -39.6, threshold: 45, passes: false, minSize: 'Non-text only on ao-sumi; use mizuasagi or washi for interactive' },
   ],
 };
