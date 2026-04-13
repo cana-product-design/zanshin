@@ -137,7 +137,7 @@ function NavLink({ item, variant, onNavigate }: NavLinkProps) {
     letterSpacing: '0.05em',
     textTransform: 'uppercase',
     padding: 'var(--space-2) var(--space-3)',
-    transition: 'color var(--duration-slow) var(--ease-kendo)',
+    transition: 'color var(--duration-medium) var(--ease-kendo)',
     outline: 'none',
     cursor: 'pointer',
     background: 'none',

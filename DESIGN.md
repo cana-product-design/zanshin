@@ -1,372 +1,430 @@
-# Unified Japanese Design System
+# Zanshin Design System
 ### *Zen Aesthetics × Aizome Kendo — A Common Path*
 
-> Two sources, one root. The Zen portfolio system (*design.md*) provides the philosophical structure, spatial logic, and content strategy. The Aizome Kendo system (*kendo-aesthetics-design.md*) provides the color depth, APCA-validated accessibility, and interaction discipline. Where they meet is the foundation of this document.
+> Two sources, one root. The Zen portfolio system provides the philosophical structure, spatial logic, and content strategy. The Aizome Kendo system provides the color depth, APCA-validated accessibility, and interaction discipline. Where they meet is the foundation of this document.
 
 **The unifying insight:** Both systems are built from the same cultural bedrock — restraint, intentionality, and the belief that emptiness carries meaning. Their only real divergence is *surface*: warm gold for the contemplative portfolio voice, cold indigo for the disciplined product interface. This document resolves that divergence with a palette mode system, then merges everything else into one coherent language.
 
----
-
-## Merged Philosophy — Nine Principles
-
-The Zen system's seven principles absorb Kendo's two additions as natural extensions, not additions. Together they form a complete practice.
-
-| Principle | Kanji | Source | Design Expression |
-|---|---|---|---|
-| **Ma** | 間 | Zen | Whitespace as charged potential. Minimum 80px between sections. Negative space has visual weight. |
-| **Wabi-Sabi** | 侘寂 | Both | Imperfection embraced. Subtle texture, irregular rhythms, honest process shown alongside polish. |
-| **Shibui** | 渋い | Zen | Quiet elegance. Max 2 typefaces, 1 accent color, every element earns its place with a "why". |
-| **Yūgen** | 幽玄 | Zen | Mystery beneath the surface. Progressive disclosure, slow scroll reveals, content that rewards return. |
-| **Kanso** | 簡素 | Zen | Elimination until only truth remains. Four words instead of seven. Max 3 hierarchy levels per page. |
-| **Ensō** | 円相 | Zen | Continuous flow. No dead-end pages. One uninterrupted narrative from landing to contact. |
-| **Kintsugi** | 金継ぎ | Zen | Repair as beauty. Failure shown honestly in case studies. Gold accent marks the seam. |
-| **Zanshin** | 残心 | Kendo | Lingering awareness. Interactions leave a trace — transitions don't snap, focus states breathe. |
-| **Sumi-e** | 墨絵 | Kendo | Ink-wash economy. A single brushstroke defines form. No decoration that doesn't encode meaning. |
+**GitHub:** https://github.com/cana-product-design/zanshin  
+**Storybook:** https://cana-product-design.github.io/zanshin/  
+**Version:** 2.1 — Aizome Refinement + Motion System  
+**Last Updated:** April 2026
 
 ---
 
-## Color System — Dual Palette Modes
+## Nine Principles
 
-The only genuine conflict between both systems is the accent color. The resolution is explicit: two named modes sharing one set of foundations. A single CSS attribute switch (`data-palette`) governs which mode is active. Everything below the accent layer is unified.
+| Principle | Kanji | Design Expression |
+|---|---|---|
+| **Ma** | 間 | Whitespace as charged potential. 80px minimum between sections. Negative space has visual weight. |
+| **Wabi-Sabi** | 侘寂 | Imperfection embraced. Subtle texture, irregular rhythms, honest process shown alongside polish. |
+| **Shibui** | 渋い | Quiet elegance. Max 2 typefaces, 1 accent color per mode, every element earns its place. |
+| **Yūgen** | 幽玄 | Mystery beneath the surface. Progressive disclosure, slow scroll reveals, content that rewards return. |
+| **Kanso** | 簡素 | Elimination until only truth remains. Four words instead of seven. Max 3 hierarchy levels per page. |
+| **Ensō** | 円相 | Continuous flow. No dead-end pages. One uninterrupted narrative from landing to contact. |
+| **Kintsugi** | 金継ぎ | Repair as beauty. Failure shown honestly. Gold accent marks the seam. |
+| **Zanshin** | 残心 | Lingering awareness. Interactions leave a trace — transitions don't snap, focus states breathe. |
+| **Sumi-e** | 墨絵 | Ink-wash economy. A single brushstroke defines form. No decoration that doesn't encode meaning. |
 
-### Unified Foundation (Both Modes)
+---
 
-These tokens are identical across Zen and Kendo contexts.
+## Aizome Color Spectrum
+
+Natural indigo (藍) dye is a living process — *Polygonum tinctorium* leaves fermented for months in earthenware vats. Each immersion deepens the hue. The color at any stage carries the time invested. This is not metaphor; it is the production history of every kendo-gi and hakama ever worn.
+
+**Fabric reference:** Authentic kendo-gi uses *sashiko* weave (刺子 — rice-grain pattern, 390g/m² cotton). Hakama use *hishisashi* diamond weave on the lower panel. Both are dyed with natural fermented indigo, never synthetic. The color this produces has a slight **purple cast** from plant chemistry and a **grey-blue muted quality** that synthetic `#4DB3CC` cannot replicate. That's why asagi was revised.
+
+### The Spectrum — 10 Named Stages
+
+| Name | Kanji | Dye Stage | Hex | UI Role | Notes |
+|---|---|---|---|---|---|
+| Aijiro | 藍白 | 1st dip | `#E8EEF5` | Surface tint, hover bg | Barely blue — first breath of indigo |
+| Asagi | 浅葱 | ~5 dips | `#5B8FA8` | Accent (dark mode), non-text on light | **Revised** — warmer, grey-blue; was synthetic `#4DB3CC` |
+| Mizuasagi | 水浅葱 | water-diluted | `#8AAFC0` | Muted text on dark, labels | Lc −58 on kachiiro ✔ ≥18px |
+| Hanada | 縹 | ~15 dips | `#2E6B8A` | Deep hover, active states | Mid blue silk — halfway to depth |
+| Aiiro | 藍色 | ~25 dips | `#2B5BA8` | Primary links (light mode) | Japan Blue; Lc +77 on shironeri ✔ |
+| Kon | 紺 | ~35 dips | `#1E3A6E` | Dark navy emphasis | Deep dip — Lc +91 on shironeri ✔ |
+| Nokon | 濃紺 | ~40 dips | `#1A2744` | Near-black navy | Almost saturated |
+| Kachiiro | 褐色 | deepest dip | `#1B2A4A` | Dark mode base, victory color | 褐色 lit. "victory color" — worn by champions |
+| Shikon | 紫紺 | aged/oxidized | `#2A2438` | Aged purple-navy of old bogu | Plant chemistry purple cast, extreme age |
+| Ainezumi | 藍鼠 | worn/washed | `#4A4860` | Decorative faint text on dark | Mousy indigo — decades of washing and sun |
+
+### CSS Primitives
 
 ```css
 :root {
-  /* === Shared Ground — derived from both systems === */
-  --color-shironeri:  #F5F4EF;  /* Raw silk white — base background (Zen: #f2efe6 ≈ same) */
-  --color-fiber:      #DDD9CE;  /* Natural fiber — card surface (between washi and zen taupe) */
-  --color-kinari:     #D9D5C7;  /* Unbleached cloth — borders */
-  --color-sumi:       #1C1C1E;  /* Ink black — primary text (APCA Lc +99 on shironeri) */
-  --color-hai:        #6B7280;  /* Ash gray — secondary text */
-
-  /* === Spacing — Zen scale, Kendo sub-tokens coexist === */
-  --space-xs:   8px;
-  --space-sm:   16px;
-  --space-md:   24px;
-  --space-lg:   40px;
-  --space-xl:   64px;
-  --space-2xl:  96px;
-  --space-3xl:  128px;
-
-  /* Fine-grained sub-tokens (Kendo) */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-6: 24px;
-  --space-8: 32px;
-
-  /* === Motion — both easings coexist === */
-  --ease-zen:    cubic-bezier(0.4, 0.0, 0.2, 1);   /* default — deliberate, Zen reveals */
-  --ease-kendo:  cubic-bezier(0.25, 0.46, 0.45, 0.94); /* micro-interactions, controlled */
-  --ease-strike: cubic-bezier(0.0, 0.0, 0.2, 1);   /* fast in, soft out — decisive actions */
-
-  --duration-short:  300ms;  /* Zen minimum */
-  --duration-medium: 500ms;
-  --duration-long:   800ms;
-  --duration-slow:   400ms;  /* Kendo component transitions */
-
-  /* === Border radius — Kendo values, within Zen's organic intent === */
-  --radius-sm: 2px;
-  --radius-md: 4px;
-  --radius-lg: 8px;   /* Hard ceiling — nothing rounder */
-
-  /* === Typography === */
-  --font-display: 'Noto Serif JP', 'Cormorant Garamond', Georgia, serif;
-  --font-body:    'Inter', 'Noto Sans JP', system-ui, sans-serif;
-  --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+  --aizome-aijiro:    #E8EEF5; /* 1st dip */
+  --aizome-asagi:     #5B8FA8; /* natural sky — revised from synthetic #4DB3CC */
+  --aizome-mizuasagi: #8AAFC0; /* water-asagi */
+  --aizome-hanada:    #2E6B8A; /* mid blue silk */
+  --aizome-aiiro:     #2B5BA8; /* Japan Blue */
+  --aizome-kon:       #1E3A6E; /* dark navy */
+  --aizome-nokon:     #1A2744; /* near-black navy */
+  --aizome-kachiiro:  #1B2A4A; /* victory color */
+  --aizome-shikon:    #2A2438; /* aged purple-navy */
+  --aizome-ainezumi:  #4A4860; /* mousy indigo */
 }
 ```
 
 ---
 
-### Palette Mode: Kintsugi (Zen / Portfolio)
+## APCA Accessibility Audit
 
-*Warm amber accent. Contemplative, editorial, personal. Use for portfolio surfaces, case studies, about pages.*
+All pairs validated with APCA-W3 (Advanced Perceptual Contrast Algorithm). Threshold: **Lc ≥ 45** for interactive elements.
+
+### Light Mode (Shironeri `#F5F4EF` base)
+
+| Pair | Lc Value | Threshold | Status | Use |
+|---|---|---|---|---|
+| Sumi `#1C1C1E` on shironeri | +99.0 | Lc 75 | ✔ PASS | Body text |
+| Aiiro `#2B5BA8` on shironeri | +77.0 | Lc 60 | ✔ PASS | Body links, interactive |
+| Kon `#1E3A6E` on shironeri | +91.0 | Lc 60 | ✔ PASS | Hover state for links |
+| Asagi `#5B8FA8` on shironeri | +44.8 | Lc 15 | ✔ NON-TEXT | Decorative borders, icons only |
+| Gold `#C9A84C` on shironeri | +40.4 | Lc 15 | ✔ NON-TEXT | Decorative accent only |
+
+### Dark Mode (Kachiiro `#1B2A4A` base)
+
+| Pair | Lc Value | Threshold | Status | Use |
+|---|---|---|---|---|
+| Shironeri `#EEF0F4` on kachiiro | −95.0 | Lc 75 | ✔ PASS | Body text |
+| Asagi `#5B8FA8` on kachiiro | −47.5 | Lc 45 | ✔ PASS | Interactive ≥16px bold |
+| Mizuasagi `#8AAFC0` on kachiiro | −58.0 | Lc 45 | ✔ PASS | Labels ≥18px |
+| Gold `#C9A84C` on kachiiro | +40.4 | Lc 15 | ✔ NON-TEXT | Decorative only |
+
+### PROHIBITED Pairs
+
+| Pair | Lc Value | Reason |
+|---|---|---|
+| Aiiro `#2B5BA8` on kachiiro `#1B2A4A` | −15.1 | Both dark — near invisible. Never use. |
+| Asagi on shironeri as body text | +44.8 | Below Lc 60 threshold for body text. Non-text only. |
+| Gold on shironeri as body text | +40.4 | Below Lc 60. Decorative/non-text only. |
+
+---
+
+## Palette Modes
+
+The only genuine conflict between Zen and Kendo contexts is the accent color. The resolution: two named modes sharing one foundation. A `data-palette` attribute governs which is active.
+
+### Kintsugi Mode — Zen / Portfolio
+
+*Warm amber accent. Contemplative, editorial, personal. Portfolio surfaces, case studies.*
 
 ```css
 [data-palette="kintsugi"] {
-  /* Surfaces */
-  --surface-base:    #F5F4EF;  /* shironeri */
-  --surface-raised:  #DDD9CE;  /* natural fiber */
-  --surface-overlay: #FFFFFF;
-  --border-default:  #D9D5C7;  /* kinari */
-  --border-strong:   #B7B0A2;  /* zen mid taupe */
-
-  /* Text */
-  --text-primary:    #1C1C1E;  /* sumi */
-  --text-secondary:  #6B7280;  /* hai */
-  --text-muted:      #7C776E;  /* zen warm gray */
-
-  /* Accent — kintsugi gold */
-  --accent-primary:  #C9A84C;  /* warm amber */
-  --accent-hover:    #A8863B;  /* deepened amber */
-  --accent-subtle:   rgba(201, 168, 76, 0.12);
-  --accent-border:   rgba(201, 168, 76, 0.35);
-
-  /* Semantic */
-  --color-success: #2D6A4F;
-  --color-warning: #B45309;
-  --color-error:   #9B1C1C;
+  --accent-primary: #C9A84C;               /* kintsugi gold */
+  --accent-hover:   #A8863B;               /* deepened amber */
+  --accent-subtle:  rgba(201, 168, 76, 0.12);
 }
 ```
 
-**WCAG / APCA for Kintsugi accent:**
-- Sumi on Kintsugi gold (`#C9A84C`): WCAG ratio 5.1:1 — AA body text. Lc ≈ +55 — interactive threshold.
-- Kintsugi gold on Shironeri: WCAG ratio 2.4:1 — does not meet AA for body text. Restrict to 24px+ decorative or use only as border/underline. **Never as body link text.**
-- For interactive links on light surfaces in Kintsugi mode: use sumi (`#1C1C1E`) or aged bronze (`#8B7355`, WCAG 4.7:1).
+### Aizome Mode — Kendo / Product
 
----
-
-### Palette Mode: Aizome (Kendo / Product / Dark)
-
-*Indigo accent. Disciplined, product-focused, dark-ground contexts.*
+*Indigo accent. Disciplined, product-focused. Dashboards, dark-ground contexts.*
 
 ```css
 [data-palette="aizome"] {
-  /* Surfaces — light mode */
-  --surface-base:    #F5F4EF;  /* shironeri */
-  --surface-raised:  #EAE8E0;  /* washi */
-  --surface-overlay: #FFFFFF;
-  --border-default:  #D9D5C7;
-  --border-strong:   #6B7280;
-
-  /* Text */
-  --text-primary:   #1C1C1E;
-  --text-secondary: #6B7280;
-  --text-muted:     #9CA3AF;
-
-  /* Accent — aiiro indigo */
-  --accent-primary: #2B5BA8;
-  --accent-hover:   #1A2744;
+  --accent-primary: #2B5BA8;               /* aiiro — Japan Blue */
+  --accent-hover:   #1E3A6E;               /* kon — deeper dip */
   --accent-subtle:  rgba(43, 91, 168, 0.10);
-  --accent-border:  rgba(43, 91, 168, 0.30);
 }
 
-/* Dark ground — kachiiro base */
 [data-palette="aizome"][data-theme="dark"] {
-  --surface-base:    #1B2A4A;  /* kachiiro */
-  --surface-raised:  #1A2744;  /* nōkon */
-  --surface-overlay: #222C42;
-  --border-default:  rgba(75, 179, 204, 0.15);
-  --border-strong:   rgba(75, 179, 204, 0.35);
-
-  --text-primary:   #F5F4EF;
-  --text-secondary: #4DB3CC;   /* asagi — APCA Lc −48.9, interactive threshold */
-  --text-muted:     #A8D8EA;
-
-  --accent-primary: #4DB3CC;   /* asagi */
-  --accent-hover:   #3B82C4;
-  --accent-subtle:  rgba(75, 179, 204, 0.12);
+  --color-bg:            #1B2A4A;          /* kachiiro */
+  --color-surface:       #1F3154;          /* raised — slightly lighter */
+  --color-surface-2:     #243460;          /* overlay ground */
+  --color-border:        rgba(91, 143, 168, 0.15); /* natural asagi seam */
+  --color-border-strong: rgba(91, 143, 168, 0.35); /* sashiko stitch line */
+  --color-text:          #EEF0F4;          /* bleached cotton */
+  --color-text-muted:    #8AAFC0;          /* mizuasagi — Lc −58 ✔ */
+  --color-text-faint:    #4A4860;          /* ainezumi — decorative only */
+  --accent-primary:      #5B8FA8;          /* natural asagi */
+  --accent-hover:        #2E6B8A;          /* hanada */
 }
 ```
 
 ---
 
-### Semantic Colors (Both Modes)
-
-Semantic colors are mode-agnostic. Grounded in natural materials common to both traditions:
-
-| Role | Hex | Source material |
-|---|---|---|
-| Success | `#2D6A4F` | Bamboo green |
-| Warning | `#B45309` | Lacquer amber |
-| Error | `#9B1C1C` | Iron oxide red |
-| Info | `#2563EB` | Clear sky |
-
----
-
-## Typography — Unified System
-
-The merged recommendation lands on the pairing both systems converge toward independently:
-
-```
-Display: Noto Serif JP (weight 600–700)
-Body:    Inter (weight 400–500)
-Code:    JetBrains Mono
-```
-
-Noto Serif JP satisfies Zen's cultural fidelity requirement and includes full Japanese glyph support. Inter is Kendo's body choice and Zen's humanist fallback. They share the same x-height family — optically compatible at all sizes.
-
-### Type Scale (Zen scale with Kendo annotations)
+## Unified Foundation Tokens
 
 ```css
 :root {
-  /* Sizes */
-  --text-h1:   clamp(48px, 6vw, 64px);  /* line-height: 1.1, letter-spacing: -0.02em */
-  --text-h2:   clamp(32px, 4vw, 40px);  /* line-height: 1.2, letter-spacing: -0.01em */
-  --text-h3:   clamp(24px, 3vw, 28px);  /* line-height: 1.3, letter-spacing: 0 */
-  --text-body: clamp(16px, 1.25vw, 18px); /* line-height: 1.7–1.8, letter-spacing: 0.01em */
-  --text-sm:   14px;                    /* line-height: 1.6, letter-spacing: 0.02em */
-  --text-xs:   12px;                    /* captions, labels — floor */
+  /* Surfaces */
+  --color-bg:            #F5F4EF; /* shironeri — raw silk white */
+  --color-surface:       #EDEAE2; /* natural fiber */
+  --color-surface-2:     #E3DED5; /* deeper washi */
+  --color-border:        #D4D0C4; /* kinari */
+  --color-border-strong: #B7B0A2; /* taupe selvedge */
+
+  /* Text */
+  --color-text:          #1C1C1E; /* sumi — Lc +99 ✔ */
+  --color-text-muted:    #4A5568; /* cooler hai — Lc +72 ✔ */
+  --color-text-faint:    #718096; /* muted slate */
+  --color-text-inverse:  #F5F4EF;
+
+  /* Type */
+  --font-display: 'Cormorant Garamond', 'Noto Serif JP', Georgia, serif;
+  --font-body:    'Satoshi', 'Inter', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Type scale */
+  --text-xs:   clamp(0.75rem,  0.7rem + 0.25vw, 0.875rem);
+  --text-sm:   clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+  --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem); /* 16px floor */
+  --text-lg:   clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+  --text-xl:   clamp(1.5rem,   1.2rem + 1.25vw, 2.25rem);
+  --text-2xl:  clamp(2rem,     1.2rem + 2.5vw, 3.5rem);
+  --text-3xl:  clamp(2.5rem,   1rem + 4vw, 5rem);
+
+  /* Spacing — 4px base, ma-informed intervals */
+  --space-1: 0.25rem;  --space-2: 0.5rem;   --space-3: 0.75rem;
+  --space-4: 1rem;     --space-6: 1.5rem;   --space-8: 2rem;
+  --space-10: 2.5rem;  --space-12: 3rem;    --space-16: 4rem;
+  --space-20: 5rem;    --space-24: 6rem;
+
+  /* Radius — sashiko geometry, hard ceiling 8px (folded cotton corner) */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;   /* HARD CEILING — nothing rounder */
+
+  /* Shadows — deep indigo base */
+  --shadow-sm: 0 1px 3px rgba(27,42,74,0.06);
+  --shadow-md: 0 4px 16px rgba(27,42,74,0.08);
+  --shadow-lg: 0 12px 40px rgba(27,42,74,0.12);
 }
 ```
 
-**Vertical ma:** Body line-height 1.7–1.8 (Zen) is the governing rule. Kendo's 1.625 falls within this as a lower bound for UI density contexts.
-
 ---
 
-## Layout & Spacing
+## Motion System — Three Traditions
 
-### Grid
+Motion in Zanshin is not decoration. It is drawn from three living practices, each contributing a distinct layer of meaning.
 
-- 12-column, asymmetric. Off-center by 5–10% (fukinsei).
-- Gutters: 24–32px.
-- Content breaks grid occasionally (datsuzoku) — deliberate, not accidental.
-- 40–60% of any viewport remains empty (ma).
+### The Traditions
 
-### Section Spacing
+**Ma 間 (Shinto)**
+The charged pause between actions. In Shinto, the threshold between the profane and sacred is marked by a gate and a moment of stillness — not transition, but preparation. In UI, *ma* is the 80ms pre-delay before a modal appears, the held breath after a toast enters, the space between one section and the next. You feel it even when you cannot name it.
+
+**Mujō 無常 (Buddhist)**
+Impermanence — nothing persists unchanged. Every entrance has a corresponding exit. Every reveal has a corresponding dissolution. In UI, this means entrances and exits are mirrors: if a modal slides in from above, it fades and sinks on close. The form that arrives is not permanent; it returns to formlessness. *Mujō* prohibits one-way animations.
+
+**Seme → Strike → Zanshin 攻め→打つ→残心 (Kendo)**
+The three-phase arc of every action in kendo. *Seme* is the controlled approach — pressure applied before contact, opponent's balance broken. *Strike* is the decisive moment — committed, irreversible, sharp. *Zanshin* is the sustained awareness after — the practitioner holds form, maintains posture, remains present. The technique is not complete until zanshin is established. In UI, a button press is: scale-down seme → 1px translateY snap → slow float back.
+
+### Easings
 
 ```css
-.section + .section {
-  padding-top: var(--space-2xl); /* 96px — Zen minimum between major sections */
-}
-
-.content-block {
-  padding: var(--space-lg) var(--space-xl); /* 40-64px — Zen inner padding */
+:root {
+  --ease-zen:     cubic-bezier(0.4, 0.0, 0.2, 1);      /* balanced, meditative */
+  --ease-kendo:   cubic-bezier(0.25, 0.46, 0.45, 0.94); /* seme — controlled approach */
+  --ease-strike:  cubic-bezier(0.0, 0.0, 0.2, 1);      /* decisive entry, snap in */
+  --ease-zanshin: cubic-bezier(0.0, 0.0, 0.1, 1);      /* slow release, linger */
+  --ease-ma:      cubic-bezier(0.4, 0.0, 0.6, 1);      /* symmetric breath, focus pulse */
 }
 ```
 
----
-
-## Interaction & Animation — Merged Rules
-
-| Rule | Value | Source |
+| Token | Curve | When to use |
 |---|---|---|
-| Minimum transition duration | 300ms | Zen |
-| Default easing | `ease-zen` — `cubic-bezier(0.4, 0.0, 0.2, 1)` | Zen |
-| Micro-interaction easing | `ease-kendo` — `cubic-bezier(0.25, 0.46, 0.45, 0.94)` | Kendo |
-| Decisive actions | `ease-strike` — `cubic-bezier(0.0, 0.0, 0.2, 1)` | Kendo |
-| Hover opacity | 0.70–0.85 — never full toggle | Zen |
-| Hover scale | 1.0 → 1.02 maximum | Zen |
-| Focus style | 3px outline, `--accent-primary`, 3px offset | Kendo (zanshin) |
-| Scroll reveals | 600–800ms fade, ease-out | Zen (yūgen) |
-| Reduced motion | `prefers-reduced-motion: reduce` — all durations → 0.01ms | Both |
+| `ease-zen` | Balanced S-curve | Default for all transitions. Section reveals, color changes, nav. |
+| `ease-kendo` | Fast start, gentle end | Hover states, dropdown open, controlled approach. |
+| `ease-strike` | Instant start, gentle end | Button active, modal snap-in, decisive user actions. |
+| `ease-zanshin` | Very slow end | Exit fades, release after button press, toast departure. |
+| `ease-ma` | Symmetric | Focus ring pulse, breathing glows, skeleton shimmer. |
+
+### Durations
 
 ```css
-/* Zanshin focus — interaction leaves a trace */
-:focus-visible {
-  outline: 3px solid var(--accent-primary);
-  outline-offset: 3px;
-  transition: outline-offset var(--duration-short) var(--ease-kendo);
+:root {
+  --duration-instant: 150ms;  /* micro only — icon swap, checkbox (kendo snap) */
+  --duration-short:   300ms;  /* minimum breath — ALL transitions use this floor */
+  --duration-medium:  500ms;  /* standard — dropdown, hover, badge state change */
+  --duration-long:    700ms;  /* entrance — section reveal (yūgen) */
+  --duration-slow:    1000ms; /* dramatic — hero entrance, full zanshin hold only */
+  --duration-ma:      80ms;   /* pre-transition pause — the ma interval */
 }
+```
 
-/* Yūgen reveal — content surfaces slowly */
-@keyframes yugen-reveal {
+**Rules:**
+- `--duration-instant` (150ms) is only for micro-interactions (icon swap, checkbox check). Never for color, background, or border transitions.
+- `--duration-short` (300ms) is the floor for all transitions on interactive elements. Nothing slower for user-initiated color/border changes.
+- `--duration-slow` (1000ms) is reserved for hero entrances and dramatic one-shot reveals. Never for hover or repeated interactions.
+- `--duration-ma` (80ms) is a delay prefix, not a transition duration — it's the pause before the transition begins.
+
+### Keyframes — Full Library
+
+```css
+/* Section reveal — 12px drift, yūgen fade */
+@keyframes zanshin-reveal {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.reveal {
-  animation: yugen-reveal var(--duration-long) var(--ease-zen) both;
+/* Hero entrance — 20px drift, slow zanshin hold */
+@keyframes zanshin-hero-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Seijaku hover — opacity shift only, no color aggression */
-.card, .nav-link, .project-thumb {
-  transition: opacity var(--duration-short) var(--ease-zen),
-              box-shadow var(--duration-slow) var(--ease-kendo);
+/* Fade only — overlays, backdrops */
+@keyframes zanshin-fade-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes zanshin-fade-out { from { opacity: 1; } to { opacity: 0; } }
+
+/* Modal — Seme→Strike→Zanshin arc */
+@keyframes zanshin-modal-in {
+  0%   { opacity: 0; transform: translateY(-16px); }
+  60%  { opacity: 1; transform: translateY(2px); }   /* micro-overshoot = strike */
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes zanshin-modal-out {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(8px) scale(0.98); }
 }
 
-.card:hover, .project-thumb:hover {
-  opacity: 0.85;
+/* Toast — seme slide from right → zanshin linger on exit */
+@keyframes zanshin-toast-enter {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes zanshin-toast-exit {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(8px) scale(0.96); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+/* Ma pulse — breathing glow for focus rings */
+@keyframes zanshin-ma-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(43, 91, 168, 0); }
+  50%       { box-shadow: 0 0 0 4px rgba(43, 91, 168, 0.18); }
+}
+
+/* Spin — loading state */
+@keyframes zanshin-spin { to { transform: rotate(360deg); } }
+
+/* Shimmer — skeleton loader (sashiko weave shimmer) */
+@keyframes zanshin-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
 }
 ```
+
+### Component Choreography
+
+**Button — Seme→Strike→Zanshin arc**
+```
+Hover:    background ease-kendo 500ms + box-shadow ease-zanshin 700ms (approach)
+Active:   scale(0.97) translateY(1px) ease-strike 300ms (strike)
+Release:  scale(1) translateY(0) ease-zanshin 700ms (linger back)
+Focus:    zanshin-ma-pulse 1600ms ease-ma infinite (breathing ring)
+```
+
+**Modal — slow entrance, mirrored exit**
+```
+Open:     80ms ma delay → zanshin-modal-in 700ms ease-zanshin (drift + snap + settle)
+Backdrop: zanshin-fade-in 500ms ease-kendo
+Close:    zanshin-modal-out 500ms ease-kendo (fades + sinks — mujō)
+```
+
+**Toast — decisive arrival, lingering departure**
+```
+Enter:    zanshin-toast-enter 300ms ease-strike (seme slide from right)
+Hold:     message present for duration (ma hold)
+Exit:     zanshin-toast-exit 700ms ease-zanshin (slow mujō departure)
+```
+
+**Section reveal — scroll-triggered yūgen**
+```
+Trigger:  IntersectionObserver at 8% visibility
+Reveal:   opacity 0→1 + translateY 12px→0 over 700ms ease-zanshin
+Stagger:  80ms delay between child elements (ma intervals)
+```
+
+**Hero entrance — one-shot page load sequence**
+```
+Kicker:   zanshin-reveal 500ms  @ 80ms  delay
+Heading:  zanshin-hero-in 1000ms @ 200ms delay
+Subtitle: zanshin-reveal 700ms  @ 400ms delay
+CTAs:     zanshin-reveal 700ms  @ 560ms delay
+Badges:   zanshin-reveal 700ms  @ 700ms delay
+```
+
+### Scroll Reveal — data attributes
+
+```html
+<!-- Single element reveal -->
+<section data-reveal>...</section>
+
+<!-- Staggered children (80ms ma intervals) -->
+<ul data-reveal-stagger>
+  <li>...</li>
+  <li>...</li>
+</ul>
+```
+
+JavaScript (IntersectionObserver) adds `.is-revealed` when element enters viewport. CSS handles the transition. `prefers-reduced-motion` collapses all to instant.
 
 ---
 
-## Navigation — Shinto Pathway + Zanshin Presence
+## Typography
 
-Zen's shrine architecture model governs structure. Kendo's zanshin governs the interactive feel of each threshold.
+### Display — Cormorant Garamond
 
-```
-Landing (Outer torii) → Project listing (Sandō) → Case study (Inner shrine) → Contact (Sacred space)
-```
+Portfolio headlines, section titles, price amounts, modal titles.
 
-```css
-/* Nav — kachiiro in aizome mode, transparent over shironeri in kintsugi mode */
-.nav {
-  padding: var(--space-sm) var(--space-xl);
-  border-bottom: 1px solid var(--border-default);
-  background: var(--surface-base);
-}
+- Weight: 300 (light) — matches `canabrava.me` editorial voice
+- Letter-spacing: −0.02em at large sizes
+- Line-height: 1.05–1.15 for display, 1.4 for body serif
+- Use case: anything that should feel contemplative, unhurried, editorial
 
-/* Active link — asagi underline (aizome) or amber (kintsugi) — zanshin lingers */
-.nav-link {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 13px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  position: relative;
-  transition: color var(--duration-slow) var(--ease-zen);
-}
+### Body — Satoshi / Inter
 
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 1px;                            /* sumi-e — one stroke */
-  background: var(--accent-primary);
-  transition: width var(--duration-long) var(--ease-kendo); /* zanshin — lingers */
-}
+UI labels, body copy, navigation, buttons, code descriptions.
 
-.nav-link:hover { color: var(--text-primary); }
-.nav-link:hover::after,
-.nav-link[aria-current="page"]::after { width: 100%; }
-```
+- Weight: 400 (regular), 500 (medium for buttons/labels)
+- Letter-spacing: 0 for body, 0.04–0.12em for uppercase labels
+- Line-height: 1.7 (generous ma — vertical breathing room)
+- Minimum body size: 16px — never below
 
 ---
 
-## Content Strategy — Case Studies
+## Layout
 
-From Zen. Unchanged — already complete and philosophically grounded.
-
-1. **Title + one sentence** (20 words max)
-2. **Hero image** — full-width, WebP, natural/unmanipulated
-3. **Context** — 2–3 paragraphs: problem, constraints, approach
-4. **Process** — iterations, failures, pivots — kintsugi thinking
-5. **Solution** — visual-first: mockups, prototypes, final designs
-6. **Reflection** — 1–2 paragraphs: what was learned, what would change
-
-**Writing rule:** Four words instead of seven. Yūgen — never explain everything.
+- 12-column, asymmetric — off-center by 5–10% (fukinsei)
+- Gutters: 24–32px
+- Content breaks grid occasionally (datsuzoku) — deliberate, never accidental
+- 40–60% of any viewport remains empty (ma)
+- Section spacing: minimum 80px between major sections
+- No pure `#FFFFFF` — use `--color-bg` (shironeri `#F5F4EF`)
 
 ---
 
-## Visual Assets — Shared Rules
+## Component Library (12 components)
 
-| Element | Rule | Source |
+All components are in `/src/components/`. All use CSS custom properties exclusively — no hardcoded hex values.
+
+| Component | Motion | Key tokens |
 |---|---|---|
-| Icons | Line only, 1.5–2px stroke, monochrome, max 24×24px | Both (identical) |
-| Photography | Natural, unmanipulated, subtle grain at 2–3% opacity | Zen |
-| Shadow | 0–4px blur, 0.1–0.2 opacity, grayscale or deep-indigo only | Both |
-| Texture | Washi grain overlay at 2–5% opacity on hero surfaces | Both |
-| Corner radius | Max 8px — hard ceiling | Kendo |
-| Image format | WebP, 1920×1080 minimum for heroes | Zen |
+| `Button` | Seme→Strike→Zanshin arc, ma-pulse focus | `--ease-strike`, `--ease-zanshin`, `--duration-medium` |
+| `Modal` | 80ms ma delay, modal-in/out arc, backdrop fade | `--ease-zanshin`, `--duration-long`, `--duration-ma` |
+| `Toast` | Slide-in from right (strike), zanshin linger exit | `--ease-strike`, `--ease-zanshin`, `--duration-long` |
+| `Input` | Border ease-kendo on focus, shadow ease-zen | `--ease-kendo`, `--duration-medium` |
+| `Tabs` | Underline reveal ease-kendo, color ease-kendo | `--ease-kendo`, `--duration-medium` |
+| `Select` | Dropdown zanshin-reveal, option hover | `--ease-strike`, `--duration-short` |
+| `Card` | Hover lift translateY(-2px), shadow ease-kendo | `--ease-kendo`, `--duration-medium` |
+| `Badge` | Static by default; state changes ease-zen | `--ease-zen`, `--duration-medium` |
+| `Divider` | No animation — structural, static | — |
+| `Nav` | Underline width ease-kendo (zanshin linger) | `--ease-kendo`, `--duration-long` |
+| `Table` | Sort icon ease-kendo, row hover bg | `--ease-kendo`, `--duration-medium` |
+| `Tooltip` | Fade + translateY 300ms ease-kendo | `--ease-kendo`, `--duration-short` |
 
 ---
 
-## Palette Switching — When to Use Which
+## Palette Switching
 
 | Context | Mode | Rationale |
 |---|---|---|
 | Portfolio landing, about, contact | `kintsugi` | Warm, personal, gold accent invites dwelling |
 | Case study headers, project heroes | `kintsugi` | Editorial warmth, kintsugi narrative fits |
 | Product UI mockups, dashboards | `aizome` | Indigo precision for product surfaces |
-| Dark-mode presentations | `aizome` dark | Kachiiro ground with asagi interaction |
+| Dark presentations, late-night work | `aizome` dark | Kachiiro ground with natural asagi interaction |
 | Code and technical documentation | `aizome` | Cooler, more focused reading environment |
-| Accessibility audit contexts | `aizome` | APCA-validated pairings are documented for this mode |
 
 ```html
 <!-- Portfolio pages -->
@@ -381,43 +439,43 @@ From Zen. Unchanged — already complete and philosophically grounded.
 
 ---
 
-## Unified Anti-Patterns
-
-Drawn from both systems — any violation breaks the philosophy regardless of mode:
+## Anti-Patterns
 
 | Avoid | Why it fails |
 |---|---|
-| Accent color as body text on light backgrounds | Kintsugi gold and asagi both fail APCA interactive threshold on light surfaces |
-| Corner radius > 8px | Soft forms contradict budo geometry and Zen structural honesty |
+| Accent color as body text on light surfaces | Gold (Lc +40) and asagi (Lc +44.8) are below Lc 60 body text threshold |
+| Aiiro as text on kachiiro background | Lc −15.1 — near invisible — **PROHIBITED** |
+| Corner radius > 8px | Contradicts budo geometry and Zen structural honesty |
 | Transitions < 300ms | Breaks seijaku and zanshin — no lingering awareness |
 | Bounce or elastic easings | Playfulness is decorative noise in both traditions |
-| Pure white `#FFFFFF` backgrounds | Use shironeri — purity through warmth, not sterility |
-| Multiple accent colors active simultaneously | Violates kanso — one accent per mode, never both at once |
+| `--duration-slow` for hover transitions | 1000ms hover transitions feel unresponsive — use `--duration-medium` |
+| `--duration-slow` (1000ms) on repeated interactions | Reserved for hero one-shot reveals only |
+| Pure `#FFFFFF` background | Use shironeri — purity through warmth, not sterility |
+| Synthetic `#4DB3CC` asagi | Replaced by natural `#5B8FA8` — less teal, more grey-blue |
 | Parallax scrolling | Breaks tranquility (Zen) and zanshin continuity (Kendo) |
 | Auto-playing media | All interactions must be user-initiated |
-| Perfect symmetry | Fukinsei — natural balance, never mechanical centering |
-| Decorative elements without purpose | Sumi-e — every mark encodes meaning |
-| Cherry blossom imagery without philosophy | Surface-level cultural reference without grounding |
+| Multiple accent colors simultaneously | Violates kanso — one accent per mode |
 
 ---
 
 ## Implementation Checklist
 
-- [ ] `data-palette` attribute set to `kintsugi` or `aizome` at `<body>`
-- [ ] Shared foundation tokens loaded before palette mode tokens
-- [ ] Noto Serif JP + Inter loaded via CDN
-- [ ] `prefers-reduced-motion` block present
-- [ ] APCA validated: all interactive text clears Lc ≥ 45 (see Kendo APCA Audit section)
-- [ ] No accent color used as body text on light surfaces
-- [ ] Focus ring: `var(--accent-primary)`, 3px, 3px offset
-- [ ] Section spacing: minimum 80–96px between major sections
-- [ ] Nav: maximum 4 items, no hamburger on desktop
-- [ ] Hover: opacity shift only, no color flash, no scale > 1.02
-- [ ] All animations ease-out for reveals, ease-in for exits
-- [ ] Lighthouse Accessibility Score: 95+
-- [ ] WCAG AA minimum — APCA Lc ≥ 45 for interactive elements
-- [ ] Semantic HTML5 structure
-- [ ] Reduced motion respected
+- [ ] `data-palette` set to `kintsugi` or `aizome` at `<body>`
+- [ ] Foundation tokens loaded before palette mode tokens
+- [ ] Cormorant Garamond (display) + Satoshi/Inter (body) loaded
+- [ ] `prefers-reduced-motion` block present and tested
+- [ ] APCA validated: all interactive text clears Lc ≥ 45
+- [ ] No accent color as body text on light surfaces
+- [ ] Focus ring: 3px solid `--accent-primary`, 3px offset
+- [ ] All keyframes use `zanshin-*` naming convention
+- [ ] No `--duration-slow` on hover or repeated transitions
+- [ ] Button has seme→strike→zanshin arc (scale + translateY + release)
+- [ ] Modal has 80ms ma delay before entrance animation
+- [ ] Toast exits with zanshin linger (ease-zanshin, not ease-strike)
+- [ ] Scroll reveals use `data-reveal` / `data-reveal-stagger`
+- [ ] Hero has staggered entrance sequence with ma intervals
+- [ ] Lighthouse Accessibility: 95+
+- [ ] Reduced motion: all animations collapse to 0.01ms
 
 ---
 
@@ -425,7 +483,7 @@ Drawn from both systems — any violation breaks the philosophy regardless of mo
 
 *Ask both questions before shipping any surface:*
 
-**Zen:** Does this feel calm, not empty? Can a user dwell here without being rushed? Does each element earn its place? Would this be more beautiful in 5 years?
+**Zen:** Does this feel calm, not empty? Can a user dwell here without being rushed? Does each element earn its place?
 
 **Kendo:** Does each interaction leave a trace of awareness? Is every mark intentional? Could a single element be removed and the form become clearer?
 
@@ -433,13 +491,11 @@ If either lens reveals clutter, simplify. If either reveals emptiness without ch
 
 ---
 
-## Version Control
-
-**Document Version:** 2.0 — Unified  
-**Sources:** `design.md` v1.0 (Zen Aesthetics) + `kendo-aesthetics-design.md` v1.0 (Aizome Kendo)  
-**Last Updated:** April 12, 2026  
-**Review Cycle:** Quarterly
+*"The dojo and the shrine share the same threshold — a space where intention becomes form. Cross it with purpose."*
 
 ---
 
-*"The dojo and the shrine share the same threshold — a space where intention becomes form. Cross it with purpose."*
+**Document Version:** 2.1 — Aizome Refinement + Motion System  
+**Sources:** `design.md` v1.0 (Zen Aesthetics) + `kendo-aesthetics-design.md` v1.0 (Aizome Kendo)  
+**Last Updated:** April 2026  
+**GitHub:** https://github.com/cana-product-design/zanshin

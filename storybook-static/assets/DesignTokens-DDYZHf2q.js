@@ -1,4 +1,4 @@
-import{j as e}from"./jsx-runtime-DiklIkkE.js";import{useMDXComponents as s}from"./index-ChEI-nsM.js";import{M as r}from"./index-mlAHiyUQ.js";import"./index-DRjF_FHU.js";import"./iframe-Cg8DL8qJ.js";import"./index-BKlBQwGM.js";import"./index-D-Mha1DF.js";import"./index-DrFu-skq.js";function d(c){const n={code:"code",em:"em",h1:"h1",h2:"h2",h3:"h3",hr:"hr",p:"p",strong:"strong",...s(),...c.components};return e.jsxs(e.Fragment,{children:[`
+import{j as e}from"./jsx-runtime-DiklIkkE.js";import{useMDXComponents as s}from"./index-ChEI-nsM.js";import{M as r}from"./index-CEAXvSCQ.js";import"./index-DRjF_FHU.js";import"./iframe-DPkBEacT.js";import"./index-BKlBQwGM.js";import"./index-D-Mha1DF.js";import"./index-DrFu-skq.js";function d(c){const n={code:"code",em:"em",h1:"h1",h2:"h2",h3:"h3",hr:"hr",p:"p",strong:"strong",...s(),...c.components};return e.jsxs(e.Fragment,{children:[`
 `,`
 `,e.jsx(r,{title:"Docs/Design Tokens"}),`
 `,e.jsx(n.h1,{id:"design-tokens",children:"Design Tokens"}),`

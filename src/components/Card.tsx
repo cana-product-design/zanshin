@@ -41,8 +41,8 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       position: 'relative',
       overflow: 'hidden',
       transition:
-        'box-shadow var(--duration-slow) var(--ease-kendo), ' +
-        'border-color var(--duration-slow) var(--ease-kendo)',
+        'box-shadow var(--duration-medium) var(--ease-kendo), ' +
+        'border-color var(--duration-medium) var(--ease-kendo)',
       boxShadow: isHovered && interactive
         ? '0 8px 32px rgba(27, 42, 74, 0.12), 0 2px 8px rgba(27, 42, 74, 0.08)'
         : 'none',

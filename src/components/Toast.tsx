@@ -17,10 +17,10 @@ export interface ToastProps {
 }
 
 const variantConfig: Record<ToastVariant, { bg: string; color: string; icon: string }> = {
-  success: { bg: 'rgba(45, 106, 79, 0.95)', color: '#F5F4EF', icon: '✓' },
-  warning: { bg: 'rgba(180, 83, 9, 0.95)', color: '#F5F4EF', icon: '⚠' },
-  error: { bg: 'rgba(155, 28, 28, 0.95)', color: '#F5F4EF', icon: '✕' },
-  info: { bg: 'rgba(43, 91, 168, 0.95)', color: '#F5F4EF', icon: 'ℹ' },
+  success: { bg: 'rgba(45, 106, 79, 0.95)',  color: 'var(--color-bg, #F5F4EF)', icon: '✓' },
+  warning: { bg: 'rgba(180, 83, 9, 0.95)',   color: 'var(--color-bg, #F5F4EF)', icon: '⚠' },
+  error:   { bg: 'rgba(155, 28, 28, 0.95)',  color: 'var(--color-bg, #F5F4EF)', icon: '✕' },
+  info:    { bg: 'rgba(43, 91, 168, 0.95)',  color: 'var(--color-bg, #F5F4EF)', icon: 'ℹ' },
 };
 
 export function Toast({ toasts, onDismiss, maxVisible = 3 }: ToastProps) {
@@ -32,8 +32,8 @@ export function Toast({ toasts, onDismiss, maxVisible = 3 }: ToastProps) {
       aria-atomic="false"
       style={{
         position: 'fixed',
-        bottom: 'var(--space-md)',
-        right: 'var(--space-md)',
+        bottom: 'var(--space-8)',
+        right: 'var(--space-8)',
         zIndex: 9999,
         display: 'flex',
         flexDirection: 'column',
@@ -43,7 +43,7 @@ export function Toast({ toasts, onDismiss, maxVisible = 3 }: ToastProps) {
       }}
     >
       {visible.map((toast, index) => (
-        <ToastItem
+        <ToastItemComponent
           key={toast.id}
           toast={toast}
           index={index}
@@ -51,16 +51,18 @@ export function Toast({ toasts, onDismiss, maxVisible = 3 }: ToastProps) {
         />
       ))}
       <style>{`
-        @keyframes toast-enter {
-          from { opacity: 0; transform: translateY(12px); }
-          to   { opacity: 1; transform: translateY(0); }
+        /* Seme approach — slides in from right (like a iai draw) */
+        @keyframes zanshin-toast-enter {
+          from { opacity: 0; transform: translateX(16px); }
+          to   { opacity: 1; transform: translateX(0); }
         }
-        @keyframes toast-exit {
+        /* Mujō departure — message lingers, then fades + sinks */
+        @keyframes zanshin-toast-exit {
           from { opacity: 1; transform: translateY(0) scale(1); }
-          to   { opacity: 0; transform: translateY(8px) scale(0.95); }
+          to   { opacity: 0; transform: translateY(8px) scale(0.96); }
         }
         @media (prefers-reduced-motion: reduce) {
-          * { animation-duration: 0.01ms !important; }
+          * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
         }
       `}</style>
     </div>
@@ -69,7 +71,7 @@ export function Toast({ toasts, onDismiss, maxVisible = 3 }: ToastProps) {
 
 Toast.displayName = 'Toast';
 
-function ToastItem({
+function ToastItemComponent({
   toast,
   onDismiss,
 }: {
@@ -83,10 +85,11 @@ function ToastItem({
 
   const dismiss = React.useCallback(() => {
     setExiting(true);
-    setTimeout(() => onDismiss(toast.id), 300);
+    // Zanshin hold — let the exit animation complete before removing (400ms)
+    setTimeout(() => onDismiss(toast.id), 400);
   }, [onDismiss, toast.id]);
 
-  // Auto-dismiss
+  // Auto-dismiss — message holds, then zanshin linger begins
   React.useEffect(() => {
     const duration = toast.duration ?? 5000;
     if (duration <= 0) return;
@@ -106,35 +109,29 @@ function ToastItem({
         background: config.bg,
         color: config.color,
         borderRadius: 'var(--radius-md)',
-        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
+        boxShadow: '0 4px 20px rgba(27,42,74,0.25)',
         fontFamily: 'var(--font-body)',
         fontSize: '0.875rem',
         lineHeight: 1.5,
         maxWidth: '360px',
         minWidth: '280px',
         pointerEvents: 'auto',
+        // Enter: seme slide from right (var(--ease-strike) — decisive)
+        // Exit:  zanshin fade (var(--ease-zanshin) — slow linger)
         animation: exiting
-          ? 'toast-exit 300ms var(--ease-kendo) forwards'
-          : 'toast-enter 350ms var(--ease-strike) both',
+          ? `zanshin-toast-exit var(--duration-long) var(--ease-zanshin) forwards`
+          : `zanshin-toast-enter var(--duration-short) var(--ease-strike) both`,
       }}
     >
-      {/* Icon */}
       <span
         aria-hidden="true"
-        style={{
-          flexShrink: 0,
-          fontWeight: 700,
-          fontSize: '0.875rem',
-          lineHeight: '1.5',
-        }}
+        style={{ flexShrink: 0, fontWeight: 700, fontSize: '0.875rem', lineHeight: '1.5' }}
       >
         {config.icon}
       </span>
 
-      {/* Message */}
       <span style={{ flex: 1 }}>{toast.message}</span>
 
-      {/* Dismiss button */}
       <button
         onClick={dismiss}
         aria-label="Dismiss notification"
@@ -148,8 +145,10 @@ function ToastItem({
           fontSize: '0.875rem',
           lineHeight: 1,
           flexShrink: 0,
-          transition: 'opacity 150ms',
+          transition: `opacity var(--duration-short) var(--ease-zen)`,
         }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = '1'; }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.7'; }}
       >
         ✕
       </button>

@@ -116,7 +116,7 @@ export function Table<T = Record<string, unknown>>({
                     whiteSpace: 'nowrap',
                     userSelect: 'none',
                     width: col.width,
-                    transition: 'color var(--duration-slow) var(--ease-kendo)',
+                    transition: 'color var(--duration-medium) var(--ease-kendo)',
                   }}
                 >
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--space-1)' }}>
@@ -129,7 +129,7 @@ export function Table<T = Record<string, unknown>>({
                           fontSize: '0.625rem',
                           lineHeight: 1,
                           transform: isSorted && sortDirection === 'desc' ? 'rotate(180deg)' : 'none',
-                          transition: 'transform var(--duration-slow) var(--ease-kendo)',
+                          transition: 'transform var(--duration-medium) var(--ease-kendo)',
                         }}
                       >
                         ▲

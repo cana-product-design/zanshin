@@ -52,8 +52,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ? '0 0 0 3px rgba(43, 91, 168, 0.15)'
         : 'none',
       transition:
-        'border-color var(--duration-slow) var(--ease-kendo), ' +
-        'box-shadow var(--duration-slow) var(--ease-kendo)',
+        'border-color var(--duration-medium) var(--ease-kendo), ' +
+        'box-shadow var(--duration-medium) var(--ease-kendo)',
       outline: 'none',
       boxSizing: 'border-box',
       ...style,

@@ -119,7 +119,7 @@ export function Tooltip({
     pointerEvents: 'none',
     opacity: visible ? 1 : 0,
     transition:
-      'opacity 200ms var(--ease-kendo), transform 200ms var(--ease-kendo)',
+      'opacity var(--duration-short) var(--ease-kendo), transform var(--duration-short) var(--ease-kendo)',
     maxWidth: '280px',
     ...placementStyles[placement],
   };

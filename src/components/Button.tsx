@@ -31,7 +31,7 @@ const sizeStyles: Record<NonNullable<ButtonProps['size']>, React.CSSProperties> 
 const variantStyles: Record<NonNullable<ButtonProps['variant']>, React.CSSProperties> = {
   primary: {
     background: 'var(--accent-primary)',
-    color: '#FFFFFF',
+    color: 'var(--color-bg)',
     border: 'none',
   },
   ghost: {
@@ -41,7 +41,7 @@ const variantStyles: Record<NonNullable<ButtonProps['variant']>, React.CSSProper
   },
   danger: {
     background: 'var(--color-error)',
-    color: '#FFFFFF',
+    color: 'var(--color-bg)',
     border: 'none',
   },
 };
@@ -77,35 +77,41 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       letterSpacing: '0.025em',
       cursor: disabled || loading ? 'not-allowed' : 'pointer',
       opacity: disabled || loading ? 0.5 : 1,
+      // Seme→Strike→Zanshin arc:
+      // background uses ease-kendo (controlled approach)
+      // transform uses ease-strike (decisive snap on press)
+      // box-shadow uses ease-zanshin (slow linger after)
       transition:
-        'background var(--duration-slow) var(--ease-kendo), ' +
+        'background var(--duration-medium) var(--ease-kendo), ' +
         'transform var(--duration-short) var(--ease-strike), ' +
-        'box-shadow var(--duration-slow) var(--ease-kendo), ' +
-        'border-color var(--duration-slow) var(--ease-kendo)',
+        'box-shadow var(--duration-long) var(--ease-zanshin), ' +
+        'border-color var(--duration-medium) var(--ease-kendo), ' +
+        'color var(--duration-medium) var(--ease-kendo)',
       outline: 'none',
+      transformOrigin: 'center bottom',
       ...sizeStyles[size],
       ...variantStyles[variant],
     };
 
-    // Hover state
+    // Hover state — seme (approach with pressure)
     if (isHovered && !disabled && !loading) {
       if (variant === 'primary') {
         baseStyle.background = 'var(--accent-hover)';
-        baseStyle.boxShadow = '0 4px 20px rgba(43, 91, 168, 0.35)';
+        baseStyle.boxShadow = '0 4px 20px rgba(43, 91, 168, 0.28)';
       } else if (variant === 'ghost') {
         baseStyle.background = 'var(--accent-subtle)';
         baseStyle.borderColor = 'var(--accent-hover)';
         baseStyle.color = 'var(--accent-hover)';
       } else if (variant === 'danger') {
         baseStyle.opacity = 0.9;
-        baseStyle.boxShadow = '0 4px 20px rgba(155, 28, 28, 0.3)';
+        baseStyle.boxShadow = '0 4px 20px rgba(155, 28, 28, 0.28)';
       }
     }
 
-    // Active state
+    // Active state — strike (snap contact, 1px translateY like shinai on Men)
     if (isActive && !disabled && !loading) {
-      baseStyle.transform = 'translateY(1px)';
-      baseStyle.boxShadow = '0 1px 4px rgba(43, 91, 168, 0.2)';
+      baseStyle.transform = 'scale(0.97) translateY(1px)';
+      baseStyle.boxShadow = '0 1px 4px rgba(43, 91, 168, 0.15)';
     }
 
     return (
@@ -144,7 +150,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               borderTopColor: 'transparent',
               borderRadius: '50%',
               display: 'inline-block',
-              animation: 'zanshin-spin 0.6s linear infinite',
+              // zanshin-spin matches the keyframe name in the motion system
+              animation: 'zanshin-spin 600ms linear infinite',
             }}
           />
         )}
@@ -153,14 +160,20 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           @keyframes zanshin-spin {
             to { transform: rotate(360deg); }
           }
+          /* Ma pulse on focus — breathing ring (Shinto interval) */
           button:focus-visible {
-            outline: 3px solid var(--accent-primary);
+            outline: 3px solid var(--accent-primary, var(--accent-blue));
             outline-offset: 3px;
+            animation: zanshin-ma-pulse 1600ms var(--ease-ma, cubic-bezier(0.4,0,0.6,1)) infinite;
+          }
+          @keyframes zanshin-ma-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(43, 91, 168, 0); }
+            50%       { box-shadow: 0 0 0 4px rgba(43, 91, 168, 0.18); }
           }
           @media (prefers-reduced-motion: reduce) {
             button {
               transition-duration: 0.01ms !important;
-              animation-duration: 0.01ms !important;
+              animation: none !important;
             }
           }
         `}</style>

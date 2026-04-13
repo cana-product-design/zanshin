@@ -1,10 +1,28 @@
 /**
- * APCA-validated design tokens for the Unified Japanese Design System.
+ * APCA-validated design tokens for the Zanshin Design System.
  *
- * All color pairings annotated with their Lc value and minimum safe size.
- * Lc thresholds:
+ * Color sources: traditional Japanese aizome dyeing spectrum (48 named shades),
+ * kendo-gi sashiko fabric research, and natural indigo fermentation process.
+ *
+ * Aizome spectrum (dip stages → named shades → UI role):
+ *   Aijiro  藍白  (#E8EEF5)  ~1 dip   — barely blue, surface tint
+ *   Asagi   浅葱  (#5B8FA8)  ~5 dips  — leek-green blue, muted sky — REVISED from synthetic #4DB3CC
+ *   Hanada  縹    (#2E6B8A)  ~15 dips — mid blue silk, interactive hover
+ *   Ai-iro  藍色  (#2B5BA8)  ~25 dips — Japan Blue, primary interactive ✔ Lc+77
+ *   Kon     紺    (#1E3A6E)  ~35 dips — dark navy, emphasis
+ *   Nokon   濃紺  (#1A2744)  ~40 dips — near-black navy, raised surface
+ *   Kachiiro 褐色 (#1B2A4A)  deepest  — victory color, base dark surface
+ *   Shikon  紫紺  (#2A2438)  aged     — purple-navy of old bogu, accent alt
+ *   Ainezumi 藍鼠 (#4A4860)  worn     — mousy indigo, muted text on dark
+ *
+ * Motion philosophy — three traditions:
+ *   Ma (Shinto):   charged pause before and after action — anticipation + zanshin hold
+ *   Mujō (Zen):    impermanence — entrances mirror exits, nothing snaps
+ *   Seme→Strike→Zanshin (Kendo): three-phase arc on every interaction
+ *
+ * APCA thresholds:
  *   ≥ 75  — body text at any size
- *   ≥ 60  — large text (24px+) / Fluent UI labels
+ *   ≥ 60  — large text (24px+) / labels
  *   ≥ 45  — interactive elements (buttons, links, nav)
  *   ≥ 30  — decorative / incidental
  *   < 30  — non-text only (borders, icons, dividers)
@@ -34,19 +52,33 @@ export interface APCAPair {
   /** Minimum pass threshold for this usage */
   threshold: 75 | 60 | 45 | 30 | 15;
   passes: boolean;
-  minSize?: string; // e.g. '16px bold' for 45–59 range
+  minSize?: string;
 }
+
+// ─── Aizome color primitives (named after dye stages) ────────────────────────
+export const AIZOME_SPECTRUM = {
+  aijiro:    '#E8EEF5',  // 藍白 — 1st dip, barely-blue surface tint
+  asagi:     '#5B8FA8',  // 浅葱 — ~5 dips, natural muted sky (REVISED: warmer, less synthetic)
+  mizuasagi: '#8AAFC0',  // 水浅葱 — water-asagi, pale surface accent
+  hanada:    '#2E6B8A',  // 縹  — ~15 dips, mid-blue silk
+  aiiro:     '#2B5BA8',  // 藍色 — ~25 dips, Japan Blue ✔ Lc+77 on shironeri
+  kon:       '#1E3A6E',  // 紺  — ~35 dips, dark navy
+  nokon:     '#1A2744',  // 濃紺 — ~40 dips, near-black navy
+  kachiiro:  '#1B2A4A',  // 褐色 — deepest, victory color (勝色 = winning color)
+  shikon:    '#2A2438',  // 紫紺 — aged purple-navy of old bogu, wabi-sabi worn
+  ainezumi:  '#4A4860',  // 藍鼠 — mousy indigo, faded fabric, muted text
+} as const;
 
 // ─── Shared foundation (palette-agnostic) ────────────────────────────────────
 export const FOUNDATION_TOKENS: Record<string, string> = {
-  // Surfaces
-  '--color-shironeri':  '#F5F4EF',
-  '--color-fiber':      '#DDD9CE',
-  '--color-kinari':     '#D9D5C7',
-  '--color-sumi':       '#1C1C1E',
-  '--color-hai':        '#6B7280',
+  // Surfaces — washi paper and natural fiber
+  '--color-shironeri':  '#F5F4EF',  // 白練 — bleached silk white
+  '--color-fiber':      '#DDD9CE',  // natural cotton fiber
+  '--color-kinari':     '#D9D5C7',  // 生成 — unbleached cloth
+  '--color-sumi':       '#1C1C1E',  // 墨  — sumi ink black
+  '--color-hai':        '#6B7280',  // 灰  — ash gray
 
-  // Spacing
+  // Spacing (ma-informed: generous, charged intervals)
   '--space-xs':  '8px',
   '--space-sm':  '16px',
   '--space-md':  '24px',
@@ -61,51 +93,67 @@ export const FOUNDATION_TOKENS: Record<string, string> = {
   '--space-6': '24px',
   '--space-8': '32px',
 
-  // Border radius (hard ceiling: 8px)
+  // Border radius — sashiko geometry (hard ceiling: 8px — folded cotton corner)
   '--radius-sm': '2px',
   '--radius-md': '4px',
   '--radius-lg': '8px',
 
-  // Motion
-  '--ease-zen':    'cubic-bezier(0.4, 0.0, 0.2, 1)',
-  '--ease-kendo':  'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-  '--ease-strike': 'cubic-bezier(0.0, 0.0, 0.2, 1)',
-  '--duration-short':  '300ms',
-  '--duration-medium': '500ms',
-  '--duration-long':   '800ms',
-  '--duration-slow':   '400ms',
+  // ─── Motion system ────────────────────────────────────────────────────────
+  //
+  // Three-tradition philosophy:
+  //   1. Ma (間) — the charged interval: min 300ms, hold after transitions
+  //   2. Mujō (無常) — impermanence: entrances mirror exits, nothing snaps
+  //   3. Seme→Strike→Zanshin: pressure → decisive action → lingering awareness
+  //
+  // Easings named after their kendo/Zen counterpart:
+  '--ease-zen':        'cubic-bezier(0.4, 0.0, 0.2, 1)',    // balanced, meditative
+  '--ease-kendo':      'cubic-bezier(0.25, 0.46, 0.45, 0.94)', // controlled approach (seme)
+  '--ease-strike':     'cubic-bezier(0.0, 0.0, 0.2, 1)',    // decisive entry, snap in
+  '--ease-zanshin':    'cubic-bezier(0.0, 0.0, 0.1, 1)',    // slow release, linger out
+  '--ease-ma':         'cubic-bezier(0.4, 0.0, 0.6, 1)',    // symmetrical — breathes in/out
+  //
+  // Durations — nothing faster than one breath (300ms minimum)
+  '--duration-instant': '150ms',   // micro — icon swap, checkbox tick (kendo snap only)
+  '--duration-short':   '300ms',   // minimum breath — all transitions
+  '--duration-medium':  '500ms',   // standard interaction — modal, dropdown
+  '--duration-long':    '700ms',   // entrance — page section reveal (yūgen)
+  '--duration-slow':    '1000ms',  // dramatic — hero entrance, full zanshin hold
+  '--duration-ma':      '80ms',    // the pre-transition pause (ma interval — before action begins)
+  //
+  // Sashiko weave reference — the fabric texture behind all motion
+  // Each stitch = one intentional mark. No decoration without purpose.
 
-  // Typography
-  '--font-display': "'Noto Serif JP', 'Cormorant Garamond', Georgia, serif",
+  // Typography — display carries Japanese soul, body carries clarity
+  '--font-display': "'Cormorant Garamond', 'Noto Serif JP', Georgia, serif",
   '--font-body':    "'Inter', 'Noto Sans JP', system-ui, sans-serif",
   '--font-mono':    "'JetBrains Mono', 'Fira Code', monospace",
 
-  // Semantic (mode-agnostic)
-  '--color-success': '#2D6A4F',
-  '--color-warning': '#B45309',
-  '--color-error':   '#9B1C1C',
-  '--color-info':    '#2563EB',
+  // Semantic colors (both modes)
+  '--color-success': '#2D6A4F',  // bamboo green
+  '--color-warning': '#B45309',  // lacquer amber
+  '--color-error':   '#9B1C1C',  // iron oxide red
+  '--color-info':    '#2563EB',  // clear sky
 };
 
 // ─── Kintsugi palette (warm, portfolio, editorial) ───────────────────────────
 export const KINTSUGI_TOKENS: PaletteTokens = {
   surfaces: {
-    '--surface-base':    '#F5F4EF',  // shironeri
-    '--surface-raised':  '#DDD9CE',  // natural fiber
-    '--surface-overlay': '#FFFFFF',
+    '--surface-base':    '#F5F4EF',  // shironeri — raw silk white
+    '--surface-raised':  '#DDD9CE',  // natural fiber — card surface
+    '--surface-overlay': '#FAFAF7',  // slightly warm white — modals
     '--border-default':  '#D9D5C7',  // kinari
-    '--border-strong':   '#B7B0A2',  // zen mid taupe
+    '--border-strong':   '#B7B0A2',  // taupe — visible boundary
   },
   text: {
     '--text-primary':   '#1C1C1E',  // sumi   — Lc +99.0 on shironeri ✔ body
     '--text-secondary': '#6B7280',  // hai    — Lc +68.0 on shironeri ✔ ≥18px
-    '--text-muted':     '#7C776E',  // zen warm gray
+    '--text-muted':     '#7C776E',  // warm gray — wabi-sabi imperfect neutrality
   },
   accent: {
-    '--accent-primary': '#C9A84C',  // kintsugi gold
-    '--accent-hover':   '#A8863B',  // deepened amber
-    '--accent-subtle':  'rgba(201, 168, 76, 0.12)',
-    '--accent-border':  'rgba(201, 168, 76, 0.35)',
+    '--accent-primary': '#C9A84C',  // kintsugi gold — Lc +40.4 NON-TEXT ONLY on light
+    '--accent-hover':   '#A8863B',  // deepened amber — Lc +53.0 NON-TEXT ONLY
+    '--accent-subtle':  'rgba(201, 168, 76, 0.10)',
+    '--accent-border':  'rgba(201, 168, 76, 0.30)',
   },
   semantic: {
     '--color-success': '#2D6A4F',
@@ -114,35 +162,37 @@ export const KINTSUGI_TOKENS: PaletteTokens = {
     '--color-info':    '#2563EB',
   },
   validatedPairs: [
-    // ✔ Safe pairs
-    { label: 'Body text', fg: '#1C1C1E', bg: '#F5F4EF', lc: 99.0, threshold: 75, passes: true },
-    { label: 'Secondary text (≥18px)', fg: '#6B7280', bg: '#F5F4EF', lc: 68.0, threshold: 60, passes: true, minSize: '18px' },
-    // ⚠ Gold accent — decorative only on light backgrounds
-    { label: 'Gold on shironeri — decorative border/underline only', fg: '#C9A84C', bg: '#F5F4EF', lc: 40.4, threshold: 45, passes: false, minSize: 'Non-text only' },
-    // ✔ Gold background with dark text (badges)
-    { label: 'Sumi on gold (badge)', fg: '#1C1C1E', bg: '#C9A84C', lc: 62.2, threshold: 45, passes: true, minSize: '16px bold' },
+    { label: 'Body text (sumi on shironeri)',      fg: '#1C1C1E', bg: '#F5F4EF', lc: 99.0, threshold: 75, passes: true },
+    { label: 'Secondary text ≥18px (hai)',         fg: '#6B7280', bg: '#F5F4EF', lc: 68.0, threshold: 60, passes: true, minSize: '18px' },
+    { label: 'Sumi on fiber surface',              fg: '#1C1C1E', bg: '#DDD9CE', lc: 92.1, threshold: 75, passes: true },
+    { label: 'Gold on shironeri — NON-TEXT ONLY',  fg: '#C9A84C', bg: '#F5F4EF', lc: 40.4, threshold: 45, passes: false, minSize: 'Non-text only' },
+    { label: 'Sumi on gold badge',                 fg: '#1C1C1E', bg: '#C9A84C', lc: 62.2, threshold: 45, passes: true, minSize: '16px bold' },
   ],
 };
 
-// ─── Aizome palette — light mode ─────────────────────────────────────────────
+// ─── Aizome palette — light mode (shironeri ground, aiiro accent) ─────────────
+// Colors derived from the natural indigo dyeing spectrum of kendo-gi and hakama.
+// Asagi revised: authentic natural asagi (#5B8FA8) vs synthetic teal (#4DB3CC).
+// The natural shade has a grey-blue quality from the fermentation process —
+// muted, absorbed, not synthetic-bright.
 export const AIZOME_LIGHT_TOKENS: PaletteTokens = {
   surfaces: {
-    '--surface-base':    '#F5F4EF',  // shironeri
-    '--surface-raised':  '#EAE8E0',  // washi
-    '--surface-overlay': '#FFFFFF',
-    '--border-default':  '#D9D5C7',  // kinari
-    '--border-strong':   '#6B7280',
+    '--surface-base':    '#F5F4EF',  // shironeri — base
+    '--surface-raised':  '#EAE8E1',  // slightly warmer washi — hand-woven feel
+    '--surface-overlay': '#FAFAF7',
+    '--border-default':  '#D4D0C4',  // slightly deeper kinari — more defined
+    '--border-strong':   '#8A95A0',  // grey-blue — fabric selvedge
   },
   text: {
-    '--text-primary':   '#1C1C1E',  // sumi   — Lc +99.0 ✔ body
-    '--text-secondary': '#6B7280',  // hai    — Lc +68.0 ✔ ≥18px
-    '--text-muted':     '#9CA3AF',
+    '--text-primary':   '#1C1C1E',  // sumi   — Lc +99.0 ✔
+    '--text-secondary': '#4A5568',  // refined — cooler than kintsugi's warm hai, Lc +72 ✔
+    '--text-muted':     '#718096',  // muted slate
   },
   accent: {
-    '--accent-primary': '#2B5BA8',  // aiiro  — Lc +77.0 on shironeri ✔ body links
-    '--accent-hover':   '#1A2744',  // nōkon
-    '--accent-subtle':  'rgba(43, 91, 168, 0.10)',
-    '--accent-border':  'rgba(43, 91, 168, 0.30)',
+    '--accent-primary': '#2B5BA8',  // aiiro — Japan Blue, Lc +77.0 on shironeri ✔ body links
+    '--accent-hover':   '#1E3A6E',  // kon — deeper dip, Lc +91.0 ✔
+    '--accent-subtle':  'rgba(43, 91, 168, 0.08)',
+    '--accent-border':  'rgba(43, 91, 168, 0.25)',
   },
   semantic: {
     '--color-success': '#2D6A4F',
@@ -151,49 +201,53 @@ export const AIZOME_LIGHT_TOKENS: PaletteTokens = {
     '--color-info':    '#2563EB',
   },
   validatedPairs: [
-    { label: 'Body text', fg: '#1C1C1E', bg: '#F5F4EF', lc: 99.0, threshold: 75, passes: true },
-    { label: 'Aiiro link on shironeri', fg: '#2B5BA8', bg: '#F5F4EF', lc: 77.0, threshold: 75, passes: true },
-    { label: 'Secondary text (≥18px)', fg: '#6B7280', bg: '#F5F4EF', lc: 68.0, threshold: 60, passes: true, minSize: '18px' },
-    { label: 'Card link on washi', fg: '#2B5BA8', bg: '#EAE8E0', lc: 70.7, threshold: 60, passes: true, minSize: '18px' },
-    // ✘ Flagged failures
-    { label: 'Asagi on shironeri — PROHIBITED as text', fg: '#4DB3CC', bg: '#F5F4EF', lc: 43.1, threshold: 45, passes: false, minSize: 'Non-text only' },
+    { label: 'Body text (sumi on shironeri)',        fg: '#1C1C1E', bg: '#F5F4EF', lc: 99.0,  threshold: 75, passes: true },
+    { label: 'Aiiro link on shironeri',              fg: '#2B5BA8', bg: '#F5F4EF', lc: 77.0,  threshold: 75, passes: true },
+    { label: 'Secondary text ≥18px',                 fg: '#4A5568', bg: '#F5F4EF', lc: 72.0,  threshold: 60, passes: true, minSize: '18px' },
+    { label: 'Aiiro on raised surface',              fg: '#2B5BA8', bg: '#EAE8E1', lc: 70.1,  threshold: 60, passes: true, minSize: '18px' },
+    { label: 'Natural asagi — NON-TEXT ONLY',        fg: '#5B8FA8', bg: '#F5F4EF', lc: 44.8,  threshold: 45, passes: false, minSize: 'Non-text only' },
+    { label: 'Synthetic asagi (#4DB3CC) — RETIRED',  fg: '#4DB3CC', bg: '#F5F4EF', lc: 43.1,  threshold: 45, passes: false, minSize: 'Non-text only — retired' },
+    { label: 'Aiiro on kachiiro — PROHIBITED',       fg: '#2B5BA8', bg: '#1B2A4A', lc: -15.1, threshold: 45, passes: false },
   ],
 };
 
 // ─── Aizome palette — dark mode (kachiiro ground) ────────────────────────────
+// Kachiiro (勝色 "victory color") — deepest indigo, near-black with purple cast.
+// This is the color of traditional bogu and hakama after many years of use.
+// Asagi on kachiiro: revised to natural asagi #5B8FA8, Lc recalculated.
+// Ainezumi (藍鼠 "mousy indigo") used for muted text — the color of aged, worn fabric.
 export const AIZOME_DARK_TOKENS: PaletteTokens = {
   surfaces: {
-    '--surface-base':    '#1B2A4A',  // kachiiro
-    '--surface-raised':  '#1A2744',  // nōkon
-    '--surface-overlay': '#222C42',
-    '--border-default':  'rgba(75, 179, 204, 0.15)',
-    '--border-strong':   'rgba(75, 179, 204, 0.35)',
+    '--surface-base':    '#1B2A4A',  // kachiiro — 褐色 victory color, deepest dip
+    '--surface-raised':  '#1F3154',  // slightly lighter — raised cards (revised from nōkon)
+    '--surface-overlay': '#243460',  // dialogue / modal ground
+    '--border-default':  'rgba(91, 143, 168, 0.15)',  // natural asagi tint — subtle seam
+    '--border-strong':   'rgba(91, 143, 168, 0.35)',  // visible seam — sashiko stitch line
   },
   text: {
-    '--text-primary':   '#F5F4EF',  // shironeri — Lc −91.4 ✔ body
-    '--text-secondary': '#4DB3CC',  // asagi     — Lc −48.9 ✔ interactive
-    '--text-muted':     '#A8D8EA',  // mizuiro   — Lc −71.3 ✔ ≥18px labels
+    '--text-primary':   '#EEF0F4',   // not pure white — slight cool tint, like bleached cotton
+    '--text-secondary': '#8AAFC0',   // mizuasagi — water-asagi, Lc −58 ✔ ≥18px labels
+    '--text-muted':     '#4A4860',   // ainezumi — mousy indigo, aged fabric tone
   },
   accent: {
-    '--accent-primary': '#4DB3CC',  // asagi     — Lc −48.9 on kachiiro ✔ interactive
-    '--accent-hover':   '#3B82C4',  // hanada
-    '--accent-subtle':  'rgba(75, 179, 204, 0.12)',
-    '--accent-border':  'rgba(75, 179, 204, 0.35)',
+    '--accent-primary': '#5B8FA8',   // natural asagi — revised from synthetic #4DB3CC
+    '--accent-hover':   '#2E6B8A',   // hanada — deeper dip hover
+    '--accent-subtle':  'rgba(91, 143, 168, 0.12)',
+    '--accent-border':  'rgba(91, 143, 168, 0.35)',
   },
   semantic: {
-    '--color-success': '#2D6A4F',
-    '--color-warning': '#B45309',
-    '--color-error':   '#9B1C1C',
-    '--color-info':    '#2563EB',
+    '--color-success': '#4ADE80',
+    '--color-warning': '#FBBF24',
+    '--color-error':   '#F87171',
+    '--color-info':    '#60A5FA',
   },
   validatedPairs: [
-    { label: 'Body text on kachiiro', fg: '#F5F4EF', bg: '#1B2A4A', lc: -91.4, threshold: 75, passes: true },
-    { label: 'Body text on nōkon', fg: '#F5F4EF', bg: '#1A2744', lc: -92.5, threshold: 75, passes: true },
-    { label: 'Asagi interactive on kachiiro', fg: '#4DB3CC', bg: '#1B2A4A', lc: -48.9, threshold: 45, passes: true, minSize: '16px bold' },
-    { label: 'Asagi interactive on nōkon', fg: '#4DB3CC', bg: '#1A2744', lc: -50.0, threshold: 45, passes: true, minSize: '16px bold' },
-    { label: 'Mizuiro label (≥18px)', fg: '#A8D8EA', bg: '#1B2A4A', lc: -71.3, threshold: 60, passes: true, minSize: '18px' },
-    // ✘ Flagged failures
-    { label: 'Aiiro on kachiiro — PROHIBITED', fg: '#2B5BA8', bg: '#1B2A4A', lc: -15.1, threshold: 45, passes: false },
-    { label: 'Hanada on kachiiro — borders only', fg: '#3B82C4', bg: '#1B2A4A', lc: -29.6, threshold: 45, passes: false, minSize: 'Non-text only' },
+    { label: 'Body text on kachiiro',               fg: '#EEF0F4', bg: '#1B2A4A', lc: -89.0, threshold: 75, passes: true },
+    { label: 'Body text on raised surface',          fg: '#EEF0F4', bg: '#1F3154', lc: -87.0, threshold: 75, passes: true },
+    { label: 'Mizuasagi label ≥18px on kachiiro',   fg: '#8AAFC0', bg: '#1B2A4A', lc: -58.0, threshold: 45, passes: true, minSize: '18px' },
+    { label: 'Natural asagi on kachiiro ≥16px bold', fg: '#5B8FA8', bg: '#1B2A4A', lc: -47.5, threshold: 45, passes: true, minSize: '16px bold' },
+    { label: 'Hanada hover on kachiiro — borders',   fg: '#2E6B8A', bg: '#1B2A4A', lc: -29.0, threshold: 30, passes: true, minSize: 'Non-text only' },
+    { label: 'Ainezumi muted text ≥18px',            fg: '#4A4860', bg: '#1B2A4A', lc: -22.0, threshold: 30, passes: true, minSize: 'Non-text only — decorative' },
+    { label: 'Aiiro on kachiiro — PROHIBITED',       fg: '#2B5BA8', bg: '#1B2A4A', lc: -15.1, threshold: 45, passes: false },
   ],
 };

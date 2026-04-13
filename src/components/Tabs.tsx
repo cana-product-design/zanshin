@@ -110,7 +110,7 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
                   cursor: tab.disabled ? 'not-allowed' : 'pointer',
                   opacity: tab.disabled ? 0.4 : 1,
                   transition:
-                    'color var(--duration-slow) var(--ease-kendo), ' +
+                    'color var(--duration-medium) var(--ease-kendo), ' +
                     'border-color var(--duration-long) var(--ease-kendo)',
                   outline: 'none',
                   marginBottom: '-1px',
@@ -130,14 +130,14 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
           aria-labelledby={`tab-${activeTab}`}
           style={{
             padding: 'var(--space-6) 0',
-            animation: 'kamae 300ms var(--ease-strike) both',
+            animation: 'zanshin-reveal 300ms var(--ease-strike) both',
           }}
         >
           {activeContent}
         </div>
 
         <style>{`
-          @keyframes kamae {
+          @keyframes zanshin-reveal {
             from { opacity: 0; transform: translateY(6px); }
             to   { opacity: 1; transform: translateY(0); }
           }

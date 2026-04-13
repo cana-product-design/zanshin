@@ -149,7 +149,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
               fontSize: '1rem',
               cursor: disabled ? 'not-allowed' : 'pointer',
               opacity: disabled ? 0.5 : 1,
-              transition: 'border-color var(--duration-slow) var(--ease-kendo)',
+              transition: 'border-color var(--duration-medium) var(--ease-kendo)',
               boxShadow: open ? '0 0 0 3px rgba(43, 91, 168, 0.15)' : 'none',
               outline: 'none',
               boxSizing: 'border-box',
@@ -161,7 +161,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
               style={{
                 display: 'inline-block',
                 transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
-                transition: 'transform var(--duration-slow) var(--ease-kendo)',
+                transition: 'transform var(--duration-medium) var(--ease-kendo)',
                 fontSize: '0.75em',
                 opacity: 0.6,
                 marginLeft: 'var(--space-2)',
@@ -192,7 +192,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
                 listStyle: 'none',
                 maxHeight: '240px',
                 overflowY: 'auto',
-                animation: 'kamae 200ms var(--ease-strike) both',
+                animation: 'zanshin-reveal var(--duration-short) var(--ease-strike) both',
               }}
             >
               {options.map((opt, idx) => {
@@ -248,7 +248,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
         )}
 
         <style>{`
-          @keyframes kamae {
+          @keyframes zanshin-reveal {
             from { opacity: 0; transform: translateY(4px); }
             to   { opacity: 1; transform: translateY(0); }
           }
